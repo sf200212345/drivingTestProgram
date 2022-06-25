@@ -3,3 +3,6 @@
 
 # videos
 *.mov
+
+# ignore env
+env/

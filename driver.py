@@ -1,65 +1,49 @@
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QGridLayout, QWidget, QPushButton
-'''
-First window you see when starting up the app
-Has a title and two buttons
-controlButton leads to the video without trivial tasks
-trivialButton leads to the video with trivial tasks
-'''
-class WelcomeWindow(QWidget):
-    def __init__(self):
-        super().__init__()
+from msilib.schema import Control
+from PyQt6.QtWidgets import QApplication, QMainWindow
+from appWindows import WelcomeWindow, InfoWindow, ExperimentWindow, FinalWindow
 
-        layout = QGridLayout()
-
-        layout.addWidget(QLabel("Welcome! Press one of the buttons below to get started."), 1, 1, 1, 2)
-        controlButton = QPushButton("Control")
-        trivialButton = QPushButton("Trivial Tasks")
-        layout.addWidget(controlButton, 2, 1)
-        layout.addWidget(trivialButton, 2, 2)
-        layout.addWidget(QWidget(), 0, 3)
-        layout.addWidget(QWidget(), 3, 0)
-        self.setLayout(layout)
-        # add handlers to change displays upon pressing the button
-        # don't forget to bind the signals to the slots
-        
-'''
-Tells the user what to do in the incoming experiment
-Has an "I'm ready" button to start
-'''
-class InfoWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-
-        layout = QGridLayout()
-
-'''
-Displays the video and two/one buttons to press depending on the selected scenario
-Create self.dict with times as the key, upon reading the timestamp record the time
-Upon button press record the time again, store the difference between times as csv string
-'''
-class ExperimentWindow(QWidget):
-    # might have to pass another value here to choose the scenario
-    def __init__(self):
-        super().__init__()
-
-        layout = QGridLayout()
-
-'''
-Displays a "finished" screen
-Flushes results to csv file
-Give option to go back to WelcomeWindow
-'''
-class FinalWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-
-        layout = QGridLayout()
+CONTROL = True
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Automated Driving with/without Trivial Tasks Experiment")
-        self.setCentralWidget(WelcomeWindow())
+        
+        # control or trivial
+        self.testScenario = CONTROL
+
+        # add all windows as class variables to use the window variables
+        self.WelcomeWindow = WelcomeWindow()
+        self.InfoWindow = InfoWindow()
+        self.ExperimentWindow = ExperimentWindow()
+        self.FinalWindow = FinalWindow()
+
+        # connect transition buttons to functions in MainWindow
+        self.WelcomeWindow.setControlButton(self.control_button_clicked)
+        self.WelcomeWindow.setTrivialButton(self.trivial_button_clicked)
+        self.InfoWindow.setReadyButton(self.ready_button_clicked)
+        self.ExperimentWindow.setCompleteButton(self.complete_button_clicked)
+
+        self.setCentralWidget(self.WelcomeWindow)
+    
+    def control_button_clicked(self):
+        self.testScenario = CONTROL
+        self.InfoWindow.renderOnScenario(self.testScenario)
+        self.ExperimentWindow.renderOnScenario(self.testScenario)
+        self.setCentralWidget(self.InfoWindow)
+    
+    def trivial_button_clicked(self):
+        self.testScenario = not CONTROL
+        self.InfoWindow.renderOnScenario(self.testScenario)
+        self.ExperimentWindow.renderOnScenario(self.testScenario)
+        self.setCentralWidget(self.InfoWindow)
+
+    def ready_button_clicked(self):
+        self.setCentralWidget(self.ExperimentWindow)
+    
+    def complete_button_clicked(self):
+        self.FinalWindow.flushToCSV(self.testScenario)
+        self.setCentralWidget(self.FinalWindow)
 
 
 app = QApplication([])

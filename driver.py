@@ -1,7 +1,8 @@
-from msilib.schema import Control
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from appWindows import WelcomeWindow, InfoWindow, ExperimentWindow, FinalWindow
 
+# if the scenario is control: true
+# if the scenario is trivial: false
 CONTROL = True
 
 class MainWindow(QMainWindow):
@@ -39,6 +40,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.InfoWindow)
 
     def ready_button_clicked(self):
+        self.ExperimentWindow.startVideo()
         self.setCentralWidget(self.ExperimentWindow)
     
     def complete_button_clicked(self):

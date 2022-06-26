@@ -1,8 +1,17 @@
+from winreg import QueryReflectionKey
 from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget, QPushButton
+from PyQt6.QtMultimedia import QMediaPlayer
+from PyQt6.QtMultimediaWidgets import QVideoWidget
+from PyQt6.QtCore import QUrl
 import datetime
 import csv
 
 OUTPUT = []
+
+# names of files that contains output from either scenario
+CONTROLFILENAME = "controlResults.csv"
+TRIVIALFILENAME = "trivialTasksResults.csv"
+
 '''
 First window you see when starting up the app
 Has a title and two buttons
@@ -70,15 +79,22 @@ class ExperimentWindow(QWidget):
 
         layout = QGridLayout()
 
-        self.taskButton = QPushButton("start time")
-        self.emergencyButton = QPushButton("stop time")
+        self.taskButton = QPushButton("Do Task")
+        self.emergencyButton = QPushButton("Emergency")
         self.longTaskButton = QPushButton("Do Task")
         self.completeButton = QPushButton("Complete")
-        layout.addWidget(self.taskButton, 1, 1)
-        layout.addWidget(self.emergencyButton, 1, 2)
-        layout.addWidget(self.longTaskButton, 1, 1, 1, 2)
-        layout.addWidget(self.completeButton, 2, 1, 1, 2)
-        layout.addWidget(QWidget(), 0, 3)
+        
+        self.player = QMediaPlayer()
+        self.player.setSource(QUrl.fromLocalFile("DrivingControl.mov"))
+        self.video = QVideoWidget()
+        self.player.setVideoOutput(self.video)
+        self.video.show()
+
+        layout.addWidget(self.video, 0, 0, 2, 4)
+        layout.addWidget(self.taskButton, 2, 1)
+        layout.addWidget(self.emergencyButton, 2, 2)
+        layout.addWidget(self.longTaskButton, 2, 1, 1, 2)
+        layout.addWidget(self.completeButton, 3, 1, 1, 2)
         layout.addWidget(QWidget(), 3, 0)
         self.setLayout(layout)
 
@@ -91,6 +107,9 @@ class ExperimentWindow(QWidget):
             self.emergencyButton.setHidden(True)
         else:
             self.longTaskButton.setHidden(True)
+
+    def startVideo(self):
+        self.player.play()
 
     def setCompleteButton(self, parentFunc):
         self.completeButton.clicked.connect(parentFunc)
@@ -119,8 +138,8 @@ class FinalWindow(QWidget):
 
     def flushToCSV(self, scenario):
         if scenario:
-            with open("controlResults.csv", "a", newline='') as writer:
+            with open(CONTROLFILENAME, "a", newline='') as writer:
                 csv.writer(writer).writerow(OUTPUT)
         else:
-            with open("trivialTasksResults.csv", "a", newline='') as writer:
+            with open(TRIVIALFILENAME, "a", newline='') as writer:
                 csv.writer(writer).writerow(OUTPUT)

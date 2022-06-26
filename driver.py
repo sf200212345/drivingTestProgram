@@ -40,10 +40,11 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.InfoWindow)
 
     def ready_button_clicked(self):
-        self.ExperimentWindow.startVideo()
         self.setCentralWidget(self.ExperimentWindow)
+        self.ExperimentWindow.startVideo()
     
     def complete_button_clicked(self):
+        self.ExperimentWindow.stopVideo()
         self.FinalWindow.flushToCSV(self.testScenario)
         self.setCentralWidget(self.FinalWindow)
 

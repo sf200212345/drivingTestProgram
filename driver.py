@@ -48,7 +48,6 @@ class MainWindow(QMainWindow):
         self.FinalWindow.flushToCSV(self.testScenario)
         self.setCentralWidget(self.FinalWindow)
 
-
 app = QApplication([])
 
 window = MainWindow()

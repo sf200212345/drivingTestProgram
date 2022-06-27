@@ -1,8 +1,10 @@
-# data output files
-*.csv
+# unwanted data output files
+controlResults.csv
+trivialTasksResults.csv
 
 # videos
 *.mov
+*.mp4
 
 # ignore env
 env/

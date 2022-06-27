@@ -6,7 +6,7 @@ import datetime
 import csv
 
 OUTPUT = []
-STARTTIME = datetime.datetime.now()
+STARTTIME = []
 
 # names of files that contains output from either scenario
 CONTROLFILENAME = "controlResults.csv"
@@ -83,7 +83,6 @@ class ExperimentWindow(QWidget):
         super().__init__()
 
         layout = QGridLayout()
-
         self.taskButton = QPushButton("Do Task")
         self.emergencyButton = QPushButton("Emergency")
         self.longEmergencyButton = QPushButton("Emergency")
@@ -120,7 +119,7 @@ class ExperimentWindow(QWidget):
 
     def startVideo(self):
         self.player.play()
-        STARTTIME = datetime.datetime.now()
+        STARTTIME.append(datetime.datetime.now())
 
     def stopVideo(self):
         self.player.stop()
@@ -152,21 +151,25 @@ class FinalWindow(QWidget):
         layout.addWidget(QWidget(), 0, 3)
         layout.addWidget(QWidget(), 3, 0)
         self.setLayout(layout)
-    # pass output and starttime as variables in here
+        
     def flushToCSV(self, scenario):
         if scenario:
             if len(OUTPUT) != len(CONTROLTIMES):
-                OUTPUT = ["I", "Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video."]
+                OUTPUT.clear()
+                OUTPUT.append("I")
+                OUTPUT.append("Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video.")
             else:
                 for i in range(len(OUTPUT)):
-                    OUTPUT[i] = (OUTPUT[i] - STARTTIME).total_seconds() - CONTROLTIMES[i]
+                    OUTPUT[i] = (OUTPUT[i] - STARTTIME[0]).total_seconds() - CONTROLTIMES[i]
             with open(CONTROLFILENAME, "a", newline='') as writer:
                 csv.writer(writer).writerow(OUTPUT)
         else:
             if len(OUTPUT) != len(TRIVIALTIMES):
-                OUTPUT = ["I", "Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video."]
+                OUTPUT.clear()
+                OUTPUT.append("I")
+                OUTPUT.append("Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video.")
             else:
                 for i in range(len(OUTPUT)):
-                    OUTPUT[i] = (OUTPUT[i] - STARTTIME).total_seconds() - TRIVIALTIMES[i]
+                    OUTPUT[i] = (OUTPUT[i] - STARTTIME[0]).total_seconds() - TRIVIALTIMES[i]
             with open(TRIVIALFILENAME, "a", newline='') as writer:
                 csv.writer(writer).writerow(OUTPUT)

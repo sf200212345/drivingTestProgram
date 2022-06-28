@@ -4,7 +4,7 @@ from PyQt6.QtMultimediaWidgets import QVideoWidget
 from PyQt6.QtCore import QUrl
 import datetime
 import csv
-
+'''
 # Global variables that contain all necessary info for the application to run
 INFO = {
     # contains all the timestamps when the user pressed the button
@@ -25,7 +25,7 @@ INFO = {
     "controlTimes": [],
     "trivialTimes": []
 }
-
+'''
 '''
 First window you see when starting up the app
 controlButton leads to the video without trivial tasks
@@ -33,16 +33,16 @@ trivialButton leads to the video with trivial tasks
 Settings allows you to set file names of input/output and timestamps on the video
 '''
 class WelcomeWindow(QWidget):
-    def __init__(self):
+    def __init__(self, INFO):
         super().__init__()
 
-        self.initializeGlobalVariables()
+        # self.initializeGlobalVariables()
         layout = QGridLayout()
-
+        self.INFO = INFO
         self.title = QLabel("Welcome! Press one of the buttons below to get started.")
         layout.addWidget(self.title, 1, 1, 1, 2)
 
-        self.ChangeFileWindow = ChangeFileWindow()
+        self.ChangeFileWindow = ChangeFileWindow(self.INFO)
         layout.addWidget(self.ChangeFileWindow, 0, 1, 4, 2)
         self.ChangeFileWindow.setHidden(True)
 
@@ -66,6 +66,7 @@ class WelcomeWindow(QWidget):
     def setTrivialButton(self, parentFunc):
         self.trivialButton.clicked.connect(parentFunc)
 
+    '''
     # initializes global variables from the file names stored in storage file "fileNames.csv"
     def initializeGlobalVariables(self):
         with open("fileNames.csv", newline='') as fileName:
@@ -83,6 +84,8 @@ class WelcomeWindow(QWidget):
                     trivialReader = csv.reader(trivialTimes)
                     for j in trivialReader:
                         INFO["trivialTimes"] = j
+
+    '''
     
     def openSettings(self):
         self.ChangeFileWindow.setHidden(False)
@@ -105,15 +108,15 @@ They can also change the timestamps on the videos where prompts show up
 On submit, all inputted text will be flushed to the corresponding internal storage files
 '''
 class ChangeFileWindow(QWidget):
-    def __init__(self):
+    def __init__(self, INFO):
         super().__init__()
 
         layout = QGridLayout()
-
+        self.INFO = INFO
         # module for setting the control video name
         controlVideoLayout = QGridLayout()
         controlVideoPrompt0 = QLabel("Current video name for the no-task scenario:")
-        self.controlVideoName = QLabel(INFO["controlVideo"])
+        self.controlVideoName = QLabel(self.INFO["controlVideo"])
         controlVideoPrompt1 = QLabel("Enter new video name (including file extension):")
         self.controlVideo = QLineEdit()
         controlVideoLayout.addWidget(controlVideoPrompt0, 0, 0)
@@ -125,7 +128,7 @@ class ChangeFileWindow(QWidget):
         # module for setting the trivial video name
         trivialVideoLayout = QGridLayout()
         trivialVideoPrompt0 = QLabel("Current video name for the trivial-task scenario:")
-        self.trivialVideoName = QLabel(INFO["trivialVideo"])
+        self.trivialVideoName = QLabel(self.INFO["trivialVideo"])
         trivialVideoPrompt1 = QLabel("Enter new video name (including file extension):")
         self.trivialVideo = QLineEdit()
         trivialVideoLayout.addWidget(trivialVideoPrompt0, 0, 0)
@@ -137,7 +140,7 @@ class ChangeFileWindow(QWidget):
         # module for setting the control output file name
         controlResultLayout = QGridLayout()
         controlResultPrompt0 = QLabel("Current output file name for the no-task scenario:")
-        self.controlResultName = QLabel(INFO["controlFileName"])
+        self.controlResultName = QLabel(self.INFO["controlFileName"])
         controlResultPrompt1 = QLabel("Enter new output file name (including file extension):")
         self.controlResult = QLineEdit()
         controlResultLayout.addWidget(controlResultPrompt0, 0, 0)
@@ -149,7 +152,7 @@ class ChangeFileWindow(QWidget):
         # module for setting the trivial output file name
         trivialResultLayout = QGridLayout()
         trivialResultPrompt0 = QLabel("Current output file name for the trivial-task scenario:")
-        self.trivialResultName = QLabel(INFO["trivialFileName"])
+        self.trivialResultName = QLabel(self.INFO["trivialFileName"])
         trivialResultPrompt1 = QLabel("Enter new output file name (including file extension):")
         self.trivialResult = QLineEdit()
         trivialResultLayout.addWidget(trivialResultPrompt0, 0, 0)
@@ -161,7 +164,7 @@ class ChangeFileWindow(QWidget):
         # module for setting the control video timestamps
         controlTimesLayout = QGridLayout()
         controlTimesPrompt0 = QLabel("Current video prompt timestamps for the no-task scenario:")
-        self.controlTimesName = QLabel(",".join(INFO["controlTimes"]))
+        self.controlTimesName = QLabel(",".join(self.INFO["controlTimes"]))
         controlTimesPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
         self.controlTimes = QLineEdit()
         controlTimesLayout.addWidget(controlTimesPrompt0, 0, 0)
@@ -173,7 +176,7 @@ class ChangeFileWindow(QWidget):
         # module for setting the trivial video timestamps
         trivialTimesLayout = QGridLayout()
         trivialTimesPrompt0 = QLabel("Current video prompt timestamps for the trivial-task scenario:")
-        self.trivialTimesName = QLabel(",".join(INFO["trivialTimes"]))
+        self.trivialTimesName = QLabel(",".join(self.INFO["trivialTimes"]))
         trivialTimesPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
         self.trivialTimes = QLineEdit()
         trivialTimesLayout.addWidget(trivialTimesPrompt0, 0, 0)
@@ -196,41 +199,41 @@ class ChangeFileWindow(QWidget):
     # flushes changed data to internal storage files
     def submitButtonClicked(self):
         if (len(self.controlVideo.text()) > 0):
-            INFO["controlVideo"] = self.controlVideo.text()
+            self.INFO["controlVideo"] = self.controlVideo.text()
             self.controlVideo.clear()
-            self.controlVideoName.setText(INFO["controlVideo"])
+            self.controlVideoName.setText(self.INFO["controlVideo"])
 
         if (len(self.trivialVideo.text()) > 0):
-            INFO["trivialVideo"] = self.trivialVideo.text()
+            self.INFO["trivialVideo"] = self.trivialVideo.text()
             self.trivialVideo.clear()
-            self.trivialVideoName.setText(INFO["trivialVideo"])
+            self.trivialVideoName.setText(self.INFO["trivialVideo"])
 
         if (len(self.controlResult.text()) > 0):
-            INFO["controlFileName"] = self.controlResult.text()
+            self.INFO["controlFileName"] = self.controlResult.text()
             self.controlResult.clear()
-            self.controlResultName.setText(INFO["controlFileName"])
+            self.controlResultName.setText(self.INFO["controlFileName"])
 
         if (len(self.trivialResult.text()) > 0):
-            INFO["trivialFileName"] = self.trivialResult.text()
+            self.INFO["trivialFileName"] = self.trivialResult.text()
             self.trivialResult.clear()
-            self.trivialResultName.setText(INFO["trivialFileName"])
+            self.trivialResultName.setText(self.INFO["trivialFileName"])
         
         with open("fileNames.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow([INFO["controlVideo"], INFO["trivialVideo"], INFO["controlFileName"], INFO["trivialFileName"], "controlTimes.csv", "trivialTimes.csv"])
+                csv.writer(writer).writerow([self.INFO["controlVideo"], self.INFO["trivialVideo"], self.INFO["controlFileName"], self.INFO["trivialFileName"], "controlTimes.csv", "trivialTimes.csv"])
 
         if (len(self.controlTimes.text()) > 0):
-            INFO["controlTimes"] = self.controlTimes.text().split(",")
+            self.INFO["controlTimes"] = self.controlTimes.text().split(",")
             self.controlTimes.clear()
-            self.controlTimesName.setText(",".join(INFO["controlTimes"]))
+            self.controlTimesName.setText(",".join(self.INFO["controlTimes"]))
             with open("controlTimes.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow(INFO["controlTimes"])
+                csv.writer(writer).writerow(self.INFO["controlTimes"])
         
         if (len(self.trivialTimes.text()) > 0):
-            INFO["trivialTimes"] = self.trivialTimes.text().split(",")
+            self.INFO["trivialTimes"] = self.trivialTimes.text().split(",")
             self.trivialTimes.clear()
-            self.trivialTimesName.setText(",".join(INFO["trivialTimes"]))
+            self.trivialTimesName.setText(",".join(self.INFO["trivialTimes"]))
             with open("trivialTimes.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow(INFO["trivialTimes"])
+                csv.writer(writer).writerow(self.INFO["trivialTimes"])
 
     def setSubmitButton(self, parentFunc):
         self.submitButton.clicked.connect(parentFunc)
@@ -268,9 +271,10 @@ When video starts, store the OS time as INFO["startTime] for later processing
 Upon button press record the time, store time in INFO["output"] global variable
 '''
 class ExperimentWindow(QWidget):
-    def __init__(self):
+    def __init__(self, INFO):
         super().__init__()
 
+        self.INFO = INFO
         layout = QGridLayout()
         self.taskButton = QPushButton("Do Task")
         self.emergencyButton = QPushButton("Emergency")
@@ -301,14 +305,14 @@ class ExperimentWindow(QWidget):
         if scenario:
             self.taskButton.setHidden(True)
             self.emergencyButton.setHidden(True)
-            self.player.setSource(QUrl.fromLocalFile(INFO["controlVideo"]))
+            self.player.setSource(QUrl.fromLocalFile(self.INFO["controlVideo"]))
         else:
             self.longEmergencyButton.setHidden(True)
-            self.player.setSource(QUrl.fromLocalFile(INFO["trivialVideo"]))
+            self.player.setSource(QUrl.fromLocalFile(self.INFO["trivialVideo"]))
 
     def startVideo(self):
         self.player.play()
-        INFO["startTime"] = datetime.datetime.now()
+        self.INFO["startTime"] = datetime.datetime.now()
 
     def stopVideo(self):
         self.player.stop()
@@ -317,13 +321,13 @@ class ExperimentWindow(QWidget):
         self.completeButton.clicked.connect(parentFunc)
 
     def taskButtonClicked(self):
-        INFO["output"].append(datetime.datetime.now())
+        self.INFO["output"].append(datetime.datetime.now())
     
     def emergencyButtonClicked(self):
-        INFO["output"].append(datetime.datetime.now())
+        self.INFO["output"].append(datetime.datetime.now())
     
     def longEmergencyButtonClicked(self):
-        INFO["output"].append(datetime.datetime.now())
+        self.INFO["output"].append(datetime.datetime.now())
 
 '''
 Displays a "finished" screen
@@ -331,9 +335,10 @@ Processes data collected from ExperimentWindow
 Flushes results to csv file
 '''
 class FinalWindow(QWidget):
-    def __init__(self):
+    def __init__(self, INFO):
         super().__init__()
 
+        self.INFO = INFO
         layout = QGridLayout()
 
         layout.addWidget(QLabel("Finished! Close the window."), 1, 1, 2, 2)
@@ -342,19 +347,20 @@ class FinalWindow(QWidget):
         self.setLayout(layout)
         
     def flushToCSV(self, scenario):
+        print(self.INFO["controlTimes"])
         if scenario:
-            if len(INFO["output"]) != len(INFO["controlTimes"]):
-                INFO["output"] = ["I", "Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video."]
+            if len(self.INFO["output"]) != len(self.INFO["controlTimes"]):
+                self.INFO["output"] = ["I", "Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video."]
             else:
-                for i in range(len(INFO["output"])):
-                    INFO["output"][i] = (INFO["output"][i] - INFO["startTime"]).total_seconds() - float(INFO["controlTimes"][i])
-            with open(INFO["controlFileName"], "a", newline='') as writer:
-                csv.writer(writer).writerow(INFO["output"])
+                for i in range(len(self.INFO["output"])):
+                    self.INFO["output"][i] = (self.INFO["output"][i] - self.INFO["startTime"]).total_seconds() - float(self.INFO["controlTimes"][i])
+            with open(self.INFO["controlFileName"], "a", newline='') as writer:
+                csv.writer(writer).writerow(self.INFO["output"])
         else:
-            if len(INFO["output"]) != len(INFO["trivialTimes"]):
-                INFO["output"] = ["I", "Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video."]
+            if len(self.INFO["output"]) != len(self.INFO["trivialTimes"]):
+                self.INFO["output"] = ["I", "Invalid Data: Number of button-presses must equal the number of prompts (tasks/emergencies) in video."]
             else:
-                for i in range(len(INFO["output"])):
-                    INFO["output"][i] = (INFO["output"][i] - INFO["startTime"]).total_seconds() - float(INFO["trivialTimes"][i])
-            with open(INFO["trivialFileName"], "a", newline='') as writer:
-                csv.writer(writer).writerow(INFO["output"])
+                for i in range(len(self.INFO["output"])):
+                    self.INFO["output"][i] = (self.INFO["output"][i] - self.INFO["startTime"]).total_seconds() - float(self.INFO["trivialTimes"][i])
+            with open(self.INFO["trivialFileName"], "a", newline='') as writer:
+                csv.writer(writer).writerow(self.INFO["output"])

@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from appWindows import WelcomeWindow, InfoWindow, ExperimentWindow, FinalWindow
+import csv
 
 # if the scenario is control: true
 # if the scenario is trivial: false
@@ -10,14 +11,19 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Automated Driving with/without Trivial Tasks Experiment")
         
+        self.INFO = {
+            "output": []
+        }
+        self.initializeINFO()
+
         # control or trivial
         self.testScenario = CONTROL
 
         # add all windows as class variables to use the window variables
-        self.WelcomeWindow = WelcomeWindow()
+        self.WelcomeWindow = WelcomeWindow(self.INFO)
         self.InfoWindow = InfoWindow()
-        self.ExperimentWindow = ExperimentWindow()
-        self.FinalWindow = FinalWindow()
+        self.ExperimentWindow = ExperimentWindow(self.INFO)
+        self.FinalWindow = FinalWindow(self.INFO)
 
         # connect transition buttons to functions in MainWindow
         self.WelcomeWindow.setControlButton(self.control_button_clicked)
@@ -47,6 +53,23 @@ class MainWindow(QMainWindow):
         self.ExperimentWindow.stopVideo()
         self.FinalWindow.flushToCSV(self.testScenario)
         self.setCentralWidget(self.FinalWindow)
+
+    def initializeINFO(self):
+        with open("fileNames.csv", newline='') as fileName:
+            reader = csv.reader(fileName)
+            for row in reader:
+                self.INFO["controlVideo"] = row[0]
+                self.INFO["trivialVideo"] = row[1]
+                self.INFO["controlFileName"] = row[2]
+                self.INFO["trivialFileName"] = row[3]
+                with open(row[4], newline='') as controlTimes:
+                    controlReader = csv.reader(controlTimes)
+                    for i in controlReader:
+                        self.INFO["controlTimes"] = i
+                with open(row[5], newline='') as trivialTimes:
+                    trivialReader = csv.reader(trivialTimes)
+                    for j in trivialReader:
+                        self.INFO["trivialTimes"] = j
 
 app = QApplication([])
 

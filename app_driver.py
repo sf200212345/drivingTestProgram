@@ -16,17 +16,19 @@ class WindowManager(QWidget):
             "outputName": "",
             "videoName": "",
             "timestamps": [],
-
-            # cascade changes to initialization, fileNames, menu
+            "taskTimes": [],
             "displayTime": ""
         }
+
+        self.scenario = ""
+
         self.initializeINFO()
         
         self.layout = QStackedLayout()
 
         # add all windows as class variables to use the window variables
-        self.InfoWindow = InfoWindow(self.INFO)
-        self.ExperimentWindow = ExperimentWindow(self.INFO)
+        self.InfoWindow = InfoWindow(self.scenario)
+        self.ExperimentWindow = ExperimentWindow(self.INFO, self.scenario)
         self.FinalWindow = FinalWindow(self.INFO)
 
         self.layout.addWidget(self.InfoWindow)
@@ -37,22 +39,45 @@ class WindowManager(QWidget):
 
         # connect transition buttons to functions in WindowManager
         self.InfoWindow.setReadyButton(self.readyButtonClicked)
-        self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideo)
+        if self.scenario == "C":
+            self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoControl)
+        else:
+            self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoTrivial)
         self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
         self.ExperimentWindow.setCompleteButton(self.FinalWindow.flushToCSV)
         self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)
 
     def initializeINFO(self):
-        with open("fileInfo.csv", newline='') as fileName:
+        with open("mode.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
-                self.INFO["videoName"] = row[0]
-                self.INFO["outputName"] = row[1]
-                with open(row[2], newline='') as controlTimes:
-                    reader = csv.reader(controlTimes)
-                    for i in reader:
-                        self.INFO["timestamps"] = i
-                self.INFO["displayTime"] = row[3]
+                self.scenario = row[0]
+        if self.scenario == "C":
+            with open("controlFiles.csv", newline='') as fileName:
+                reader = csv.reader(fileName)
+                for row in reader:
+                    self.INFO["videoName"] = row[0]
+                    self.INFO["outputName"] = row[1]
+                    self.INFO["displayTime"] = row[2]
+            with open("controlTimes.csv", newline='') as fileName:
+                reader = csv.reader(fileName)
+                for row in reader:
+                    self.INFO["timestamps"] = row
+        else:
+            with open("trivialFiles.csv", newline='') as fileName:
+                reader = csv.reader(fileName)
+                for row in reader:
+                    self.INFO["videoName"] = row[0]
+                    self.INFO["outputName"] = row[1]
+                    self.INFO["displayTime"] = row[2]
+            with open("trivialEmergencyTimes.csv", newline='') as fileName:
+                reader = csv.reader(fileName)
+                for row in reader:
+                    self.INFO["timestamps"] = row
+            with open("trivialTaskTimes.csv", newline='') as fileName:
+                reader = csv.reader(fileName)
+                for row in reader:
+                    self.INFO["taskTimes"] = row
 
     def readyButtonClicked(self):
         self.layout.setCurrentIndex(1)

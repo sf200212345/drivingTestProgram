@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QStackedLayout
-from change_file_window import ChangeFileWindowControl, ChangeFileWindowTrivial
+from scripts.change_file_window import ChangeFileWindowControl, ChangeFileWindowTrivial
 import csv
 
 # Houses all windows
@@ -45,32 +45,32 @@ class EditWindow(QWidget):
         self.setLayout(self.layout)
         
     def initializeINFO(self):
-        with open("mode.csv", newline='') as fileName:
+        with open("./storage/mode.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.scenario = row[0]
-        with open("controlFiles.csv", newline='') as fileName:
+        with open("./storage/controlFiles.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.CINFO["videoName"] = row[0]
                 self.CINFO["outputName"] = row[1]
                 self.CINFO["displayTime"] = row[2]
-        with open("controlTimes.csv", newline='') as fileName:
+        with open("./storage/controlTimes.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.CINFO["timestamps"] = row
         
-        with open("trivialFiles.csv", newline='') as fileName:
+        with open("./storage/trivialFiles.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.TINFO["videoName"] = row[0]
                 self.TINFO["outputName"] = row[1]
                 self.TINFO["displayTime"] = row[2]
-        with open("trivialTaskTimes.csv", newline='') as fileName:
+        with open("./storage/trivialTaskTimes.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.TINFO["taskTimestamps"] = row
-        with open("trivialEmergencyTimes.csv", newline='') as fileName:
+        with open("./storage/trivialEmergencyTimes.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.TINFO["emergencyTimestamps"] = row
@@ -83,7 +83,7 @@ class EditWindow(QWidget):
         else:
             self.scenario = "C"
             self.layout.setCurrentIndex(0)
-        with open("mode.csv", "w", newline='') as writer:
+        with open("./storage/mode.csv", "w", newline='') as writer:
                 csv.writer(writer).writerow([self.scenario])
 
 class MainWindow(QMainWindow):

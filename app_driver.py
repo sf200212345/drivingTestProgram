@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QStackedLayout
-from experiment_window import ExperimentWindow
-from info_window import InfoWindow
-from final_window import FinalWindow
+from scripts.experiment_window import ExperimentWindow
+from scripts.info_window import InfoWindow
+from scripts.final_window import FinalWindow
 import csv
 import datetime
 
@@ -48,33 +48,33 @@ class WindowManager(QWidget):
         self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)
 
     def initializeINFO(self):
-        with open("mode.csv", newline='') as fileName:
+        with open("./storage/mode.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
                 self.scenario = row[0]
         if self.scenario == "C":
-            with open("controlFiles.csv", newline='') as fileName:
+            with open("./storage/controlFiles.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
                     self.INFO["videoName"] = row[0]
                     self.INFO["outputName"] = row[1]
                     self.INFO["displayTime"] = row[2]
-            with open("controlTimes.csv", newline='') as fileName:
+            with open("./storage/controlTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
                     self.INFO["timestamps"] = row
         else:
-            with open("trivialFiles.csv", newline='') as fileName:
+            with open("./storage/trivialFiles.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
                     self.INFO["videoName"] = row[0]
                     self.INFO["outputName"] = row[1]
                     self.INFO["displayTime"] = row[2]
-            with open("trivialEmergencyTimes.csv", newline='') as fileName:
+            with open("./storage/trivialEmergencyTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
                     self.INFO["timestamps"] = row
-            with open("trivialTaskTimes.csv", newline='') as fileName:
+            with open("./storage/trivialTaskTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
                     self.INFO["taskTimes"] = row

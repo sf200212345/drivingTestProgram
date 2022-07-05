@@ -21,6 +21,7 @@ class ExperimentWindow(QWidget):
                 self.timestamps.append(int((float(self.INFO["timestamps"][i]) + float(self.INFO["displayTime"])) * 1000))
             self.timestampsLength = len(self.timestamps)
             self.currTimestamp = 0
+            self.clicked = True
         else:
             self.emergencyTimes = []
             for i in range(len(self.INFO["timestamps"])):
@@ -28,6 +29,7 @@ class ExperimentWindow(QWidget):
                 self.emergencyTimes.append(int((float(self.INFO["timestamps"][i]) + float(self.INFO["displayTime"])) * 1000))
             self.emergencyLength = len(self.emergencyTimes)
             self.currEmergency = 0
+            self.emergencyClicked = True
 
             self.taskTimes = []
             for i in range(len(self.INFO["taskTimes"])):
@@ -35,8 +37,8 @@ class ExperimentWindow(QWidget):
                 self.taskTimes.append(int((float(self.INFO["taskTimes"][i]) + float(self.INFO["displayTime"])) * 1000))
             self.taskLength = len(self.taskTimes)
             self.currTask = 0
-
-        self.clicked = True
+            self.taskClicked = True
+            
         self.output = []
 
         layout = QGridLayout()
@@ -92,8 +94,10 @@ class ExperimentWindow(QWidget):
         self.emergencyButton.setHidden(True)
         self.taskButton.setHidden(True)
 
-        self.clicked = True
-        self.currTimestamp = 0
+        self.emergencyClicked = True
+        self.taskClicked = True
+        self.currEmergency = 0
+        self.currTask = 0
         self.output.clear()
         
         self.player.play()
@@ -112,15 +116,14 @@ class ExperimentWindow(QWidget):
         self.output.append(datetime.datetime.now())
         self.emergencyButton.setHidden(True)
         self.currEmergency += 1
-        self.clicked = True
+        self.emergencyClicked = True
     
     def taskButtonClickedTrivial(self):
         self.output.append(datetime.datetime.now())
         self.taskButton.setHidden(True)
         self.currTask += 1
-        self.clicked = True
+        self.taskClicked = True
 
-    # complete these functions and playbackstatechangedtrivial
     def positionChangedControl(self, position):   
         if (self.currTimestamp < self.timestampsLength and (self.timestamps[self.currTimestamp] - position) < 100):
             if (self.clicked):
@@ -134,20 +137,40 @@ class ExperimentWindow(QWidget):
             self.currTimestamp += 1
 
     def positionChangedTrivialEmergency(self, position):   
-        if (self.currTimestamp < self.timestampsLength and (self.timestamps[self.currTimestamp] - position) < 100):
-            if (self.clicked):
-                self.clicked = False
+        if (self.currEmergency < self.emergencyLength and (self.emergencyTimes[self.currEmergency] - position) < 100):
+            if (self.emergencyClicked):
+                self.emergencyClicked = False
                 self.emergencyButton.setHidden(False)
             # if emergency button wasn't clicked in the interval
             else:
-                self.clicked = True
+                self.emergencyClicked = True
                 self.emergencyButton.setHidden(True)
                 self.output.append(datetime.datetime.now())
-            self.currTimestamp += 1
+            self.currEmergency += 1
+
+    def positionChangedTrivialTask(self, position):   
+        if (self.currTask < self.taskLength and (self.taskTimes[self.currTask] - position) < 100):
+            if (self.taskClicked):
+                self.taskClicked = False
+                self.taskButton.setHidden(False)
+            # if emergency button wasn't clicked in the interval
+            else:
+                self.taskClicked = True
+                self.taskButton.setHidden(True)
+                self.output.append(datetime.datetime.now())
+            self.currTask += 1
 
     def playbackStateChangedControl(self, state):
         if (state == QMediaPlayer.PlaybackState.StoppedState):
             self.video.setHidden(True)
             self.emergencyButton.setHidden(True)
+            self.completeButton.setHidden(False)
+            self.INFO["output"] = self.output
+
+    def playbackStateChangedTrivial(self, state):
+        if (state == QMediaPlayer.PlaybackState.StoppedState):
+            self.video.setHidden(True)
+            self.emergencyButton.setHidden(True)
+            self.taskButton.setHidden(True)
             self.completeButton.setHidden(False)
             self.INFO["output"] = self.output

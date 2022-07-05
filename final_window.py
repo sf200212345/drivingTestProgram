@@ -11,7 +11,7 @@ class FinalWindow(QWidget):
         super().__init__()
     
         self.INFO = INFO
-        self.timestamps = self.INFO["taskTimes"].concat(self.INFO["timestamps"])
+        self.timestamps = self.INFO["taskTimes"] + self.INFO["timestamps"]
         for i in range(len(self.timestamps)):
             self.timestamps[i] = float(self.timestamps[i])
         self.timestamps.sort()

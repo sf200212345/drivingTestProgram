@@ -8,3 +8,7 @@ trivialTasksResults.csv
 
 # ignore env
 env/
+
+# ignore build and dist
+build/
+dist/

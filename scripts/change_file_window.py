@@ -235,9 +235,9 @@ class ChangeFileWindowTrivial(QWidget):
         self.editButton.clicked.connect(self.editButtonClicked)
         self.submitButton.clicked.connect(self.submitButtonClicked)
         self.submitButton.clicked.connect(self.flushToFiles)
-        
+
         self.setLayout(layout)
-    
+
     def setChangeWindowButton(self, parentFunc):
         self.changeWindowButton.clicked.connect(parentFunc)
 

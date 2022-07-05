@@ -12,3 +12,7 @@ env/
 # ignore build and dist
 build/
 dist/
+
+#ignore pycache
+__pycache__/
+scripts/__pycache__/

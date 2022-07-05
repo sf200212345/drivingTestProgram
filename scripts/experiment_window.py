@@ -56,7 +56,7 @@ class ExperimentWindow(QWidget):
         self.player.setAudioOutput(self.audio)
         self.video.show()
         self.player.setSource(QUrl.fromLocalFile(self.INFO["videoName"]))
-        
+
         layout.addWidget(self.video, 0, 0, 3, 4)
         layout.addWidget(self.emergencyButton, 3, 1, 1, 1)
         layout.addWidget(self.completeButton, 1, 1, 2, 2)

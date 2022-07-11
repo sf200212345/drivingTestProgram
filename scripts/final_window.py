@@ -17,10 +17,14 @@ class FinalWindow(QWidget):
         self.timestamps.sort()
         layout = QGridLayout()
 
-        layout.addWidget(QLabel("Finished! Press the button below to conduct another experiment. Close the window to end the experiment."), 1, 1, 2, 2)
-
+        finishMessage = QLabel("Finished! Press the button below to conduct another experiment. Close the window to end the experiment.")
         self.returnToStartButton = QPushButton("Return to Start")
+
+        finishMessage.setObjectName("finishMessage")
+        self.returnToStartButton.setObjectName("returnToStartButton")
+
         layout.addWidget(self.returnToStartButton, 2, 1, 1, 2)
+        layout.addWidget(finishMessage, 1, 1, 2, 2)
         layout.addWidget(QWidget(), 0, 3)
         layout.addWidget(QWidget(), 3, 0)
         self.setLayout(layout)

@@ -46,6 +46,7 @@ class ExperimentWindow(QWidget):
         self.emergencyButton = QPushButton("Emergency")
         if scenario == "T":
             self.taskButton = QPushButton("Do Task")
+            self.taskButton.setObjectName("taskButton")
             layout.addWidget(self.taskButton, 3, 2, 1, 1)
         self.completeButton = QPushButton("Complete")
         
@@ -56,6 +57,10 @@ class ExperimentWindow(QWidget):
         self.player.setAudioOutput(self.audio)
         self.video.show()
         self.player.setSource(QUrl.fromLocalFile(self.INFO["videoName"]))
+
+        self.emergencyButton.setObjectName("emergencyButton")
+        self.completeButton.setObjectName("completeButton")
+        self.video.setObjectName("video")
 
         layout.addWidget(self.video, 0, 0, 3, 4)
         layout.addWidget(self.emergencyButton, 3, 1, 1, 1)

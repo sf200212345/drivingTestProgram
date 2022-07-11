@@ -100,6 +100,10 @@ class MainWindow(QMainWindow):
 
 app = QApplication([])
 
+with open("./styles/app_styles.css", 'r') as f:
+    style = f.read()
+    app.setStyleSheet(style)
+
 window = MainWindow()
 window.show()
 

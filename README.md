@@ -1,9 +1,3 @@
 # drivingTestProgram
 
-Version deprecated. Now using this program as a template to create two separate applications for the two scenarios needed by the experiment.
-
-Future versions of the program can be found at:
-
-[Control Scenario (no trivial tasks)](https://github.com/sf200212345/drivingControlScenario)
-
-[Trivial Scenario (with trivial tasks)](https://github.com/sf200212345/drivingTrivialScenario)
+Application for conducting an experiment. Includes separate application and settings interfaces to separate the interface of the experiment supervisor and the participant.

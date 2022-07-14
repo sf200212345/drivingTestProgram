@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget, QPushButton
+from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget
 import csv
 
 '''
@@ -17,13 +17,13 @@ class FinalWindow(QWidget):
         self.timestamps.sort()
         layout = QGridLayout()
 
-        finishMessage = QLabel("Finished! Press the button below to conduct another experiment. Close the window to end the experiment.")
-        self.returnToStartButton = QPushButton("Return to Start")
+        finishMessage = QLabel("Finished! Close the window to end the experiment.")
+        #self.returnToStartButton = QPushButton("Return to Start")
 
         finishMessage.setObjectName("finishMessage")
-        self.returnToStartButton.setObjectName("returnToStartButton")
+        #self.returnToStartButton.setObjectName("returnToStartButton")
 
-        layout.addWidget(self.returnToStartButton, 2, 1, 1, 2)
+        #layout.addWidget(self.returnToStartButton, 2, 1, 1, 2)
         layout.addWidget(finishMessage, 1, 1, 2, 2)
         layout.addWidget(QWidget(), 0, 3)
         layout.addWidget(QWidget(), 3, 0)
@@ -36,7 +36,7 @@ class FinalWindow(QWidget):
             for i in range(len(self.INFO["output"])):
                 self.INFO["output"][i] = (self.INFO["output"][i] - self.INFO["startTime"]).total_seconds() - self.timestamps[i]
         with open(self.INFO["outputName"], "a", newline='') as writer:
-            csv.writer(writer).writerow(self.INFO["output"])
+            csv.writer(writer).writerow([self.INFO["participantID"]] + self.INFO["output"])
 
-    def setReturnToStartButton(self, parentFunc):
-        self.returnToStartButton.clicked.connect(parentFunc)
+    #def setReturnToStartButton(self, parentFunc):
+        #self.returnToStartButton.clicked.connect(parentFunc)

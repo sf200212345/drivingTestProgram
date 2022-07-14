@@ -11,7 +11,8 @@ class EditWindow(QWidget):
             "outputName": "",
             "videoName": "",
             "timestamps": [],
-            "displayTime": ""
+            "displayTime": "",
+            "surveyLink": ""
         }
         
         self.TINFO = {
@@ -19,7 +20,8 @@ class EditWindow(QWidget):
             "videoName": "",
             "taskTimestamps": [],
             "emergencyTimestamps": [],
-            "displayTime": ""
+            "displayTime": "",
+            "surveyLink": ""
         }
 
         self.scenario = ""
@@ -55,6 +57,7 @@ class EditWindow(QWidget):
                 self.CINFO["videoName"] = row[0]
                 self.CINFO["outputName"] = row[1]
                 self.CINFO["displayTime"] = row[2]
+                self.CINFO["surveyLink"] = row[3]
         with open("./storage/controlTimes.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
@@ -66,6 +69,7 @@ class EditWindow(QWidget):
                 self.TINFO["videoName"] = row[0]
                 self.TINFO["outputName"] = row[1]
                 self.TINFO["displayTime"] = row[2]
+                self.TINFO["surveyLink"] = row[3]
         with open("./storage/trivialTaskTimes.csv", newline='') as fileName:
             reader = csv.reader(fileName)
             for row in reader:
@@ -75,7 +79,6 @@ class EditWindow(QWidget):
             for row in reader:
                 self.TINFO["emergencyTimestamps"] = row
         
-
     def changeWindowButtonClicked(self):
         if self.scenario == "C":
             self.scenario = "T"

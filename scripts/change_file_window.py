@@ -23,7 +23,7 @@ class ChangeFileWindowControl(QWidget):
         videoLayout.addWidget(self.videoName, 1, 0)
         videoLayout.addWidget(self.videoPrompt1, 2, 0)
         videoLayout.addWidget(self.video, 3, 0)
-        layout.addLayout(videoLayout, 1, 1)
+        layout.addLayout(videoLayout, 0, 1)
 
         # module for setting the control output file name
         outputLayout = QGridLayout()
@@ -37,7 +37,7 @@ class ChangeFileWindowControl(QWidget):
         outputLayout.addWidget(self.outputName, 1, 0)
         outputLayout.addWidget(self.outputPrompt1, 2, 0)
         outputLayout.addWidget(self.output, 3, 0)
-        layout.addLayout(outputLayout, 1, 2)
+        layout.addLayout(outputLayout, 0, 2)
 
         # module for setting the control video timestamps
         timestampsLayout = QGridLayout()
@@ -51,13 +51,13 @@ class ChangeFileWindowControl(QWidget):
         timestampsLayout.addWidget(self.timestampsName, 1, 0)
         timestampsLayout.addWidget(self.timestampsPrompt1, 2, 0)
         timestampsLayout.addWidget(self.timestamps, 3, 0)
-        layout.addLayout(timestampsLayout, 2, 1)
+        layout.addLayout(timestampsLayout, 1, 1)
 
         # module for setting the control button display time
         displayTimeLayout = QGridLayout()
         displayTimePrompt0 = QLabel("Current delay time for button display for the control (no tasks) scenario:")
         self.displayTimeName = QLabel(self.INFO["displayTime"])
-        self.displayTimePrompt1 = QLabel("Enter new delay time (must be greater than the minimal interval in timestamps):")
+        self.displayTimePrompt1 = QLabel("Enter new delay time (must be less than the minimal interval in timestamps):")
         self.displayTime = QLineEdit()
         self.displayTimePrompt1.setHidden(True)
         self.displayTime.setHidden(True)
@@ -65,7 +65,21 @@ class ChangeFileWindowControl(QWidget):
         displayTimeLayout.addWidget(self.displayTimeName, 1, 0)
         displayTimeLayout.addWidget(self.displayTimePrompt1, 2, 0)
         displayTimeLayout.addWidget(self.displayTime, 3, 0)
-        layout.addLayout(displayTimeLayout, 2, 2)
+        layout.addLayout(displayTimeLayout, 1, 2)
+
+        # module for setting the control survey link
+        surveyLinkLayout = QGridLayout()
+        surveyLinkPrompt0 = QLabel("Current survey link for the control (no tasks) scenario:")
+        self.surveyLinkName = QLabel(self.INFO["surveyLink"])
+        self.surveyLinkPrompt1 = QLabel("Enter new survey link:")
+        self.surveyLink = QLineEdit()
+        self.surveyLinkPrompt1.setHidden(True)
+        self.surveyLink.setHidden(True)
+        surveyLinkLayout.addWidget(surveyLinkPrompt0, 0, 0)
+        surveyLinkLayout.addWidget(self.surveyLinkName, 1, 0)
+        surveyLinkLayout.addWidget(self.surveyLinkPrompt1, 2, 0)
+        surveyLinkLayout.addWidget(self.surveyLink, 3, 0)
+        layout.addLayout(surveyLinkLayout, 2, 1)
 
         submitLayout = QGridLayout()
         self.editPrompt = QLabel("Press the Edit button to change settings.")
@@ -102,6 +116,8 @@ class ChangeFileWindowControl(QWidget):
         self.timestamps.setHidden(False)
         self.displayTimePrompt1.setHidden(False)
         self.displayTime.setHidden(False)
+        self.surveyLinkPrompt1.setHidden(False)
+        self.surveyLink.setHidden(False)
 
     def submitButtonClicked(self):
         self.editButton.setHidden(False)
@@ -116,6 +132,8 @@ class ChangeFileWindowControl(QWidget):
         self.timestamps.setHidden(True)
         self.displayTimePrompt1.setHidden(True)
         self.displayTime.setHidden(True)
+        self.surveyLinkPrompt1.setHidden(True)
+        self.surveyLink.setHidden(True)
 
     def flushToFiles(self):
         if (len(self.video.text()) > 0):
@@ -133,8 +151,13 @@ class ChangeFileWindowControl(QWidget):
             self.displayTime.clear()
             self.displayTimeName.setText(self.INFO["displayTime"])
 
+        if (len(self.surveyLink.text()) > 0):
+            self.INFO["surveyLink"] = self.surveyLink.text()
+            self.surveyLink.clear()
+            self.surveyLinkName.setText(self.INFO["surveyLink"])
+
         with open("./storage/controlFiles.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"]])
+                csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"], self.INFO["surveyLink"]])
 
         if (len(self.timestamps.text()) > 0):
             self.INFO["timestamps"] = self.timestamps.text().split(",")
@@ -165,7 +188,7 @@ class ChangeFileWindowTrivial(QWidget):
         videoLayout.addWidget(self.videoName, 1, 0)
         videoLayout.addWidget(self.videoPrompt1, 2, 0)
         videoLayout.addWidget(self.video, 3, 0)
-        layout.addLayout(videoLayout, 1, 1)
+        layout.addLayout(videoLayout, 0, 1)
 
         # module for setting the trival output file name
         outputLayout = QGridLayout()
@@ -179,9 +202,9 @@ class ChangeFileWindowTrivial(QWidget):
         outputLayout.addWidget(self.outputName, 1, 0)
         outputLayout.addWidget(self.outputPrompt1, 2, 0)
         outputLayout.addWidget(self.output, 3, 0)
-        layout.addLayout(outputLayout, 1, 2)
+        layout.addLayout(outputLayout, 0, 2)
 
-        # module for setting the trivial video timestamps
+        # module for setting the trivial video task timestamps
         timestampsLayout = QGridLayout()
         taskTimestampsPrompt0 = QLabel("Current video prompt timestamps (tasks) for the trivial (with tasks) scenario:")
         self.taskTimestampsName = QLabel(",".join(self.INFO["taskTimestamps"]))
@@ -193,23 +216,27 @@ class ChangeFileWindowTrivial(QWidget):
         timestampsLayout.addWidget(self.taskTimestampsName, 1, 0)
         timestampsLayout.addWidget(self.taskTimestampsPrompt1, 2, 0)
         timestampsLayout.addWidget(self.taskTimestamps, 3, 0)
+        layout.addLayout(timestampsLayout, 1, 1)
+
+        # module for setting the trivial video emergency timestamps
+        timestampsLayout1 = QGridLayout()
         emergencyTimestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the trivial (with tasks) scenario:")
         self.emergencyTimestampsName = QLabel(",".join(self.INFO["emergencyTimestamps"]))
         self.emergencyTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
         self.emergencyTimestamps = QLineEdit()
         self.emergencyTimestampsPrompt1.setHidden(True)
         self.emergencyTimestamps.setHidden(True)
-        timestampsLayout.addWidget(emergencyTimestampsPrompt0, 0, 1)
-        timestampsLayout.addWidget(self.emergencyTimestampsName, 1, 1)
-        timestampsLayout.addWidget(self.emergencyTimestampsPrompt1, 2, 1)
-        timestampsLayout.addWidget(self.emergencyTimestamps, 3, 1)
-        layout.addLayout(timestampsLayout, 2, 1)
+        timestampsLayout1.addWidget(emergencyTimestampsPrompt0, 0, 0)
+        timestampsLayout1.addWidget(self.emergencyTimestampsName, 1, 0)
+        timestampsLayout1.addWidget(self.emergencyTimestampsPrompt1, 2, 0)
+        timestampsLayout1.addWidget(self.emergencyTimestamps, 3, 0)
+        layout.addLayout(timestampsLayout1, 1, 2)
 
         # module for setting the trivial button display time
         displayTimeLayout = QGridLayout()
         displayTimePrompt0 = QLabel("Current delay time for button display for the trivial (with tasks) scenario:")
         self.displayTimeName = QLabel(self.INFO["displayTime"])
-        self.displayTimePrompt1 = QLabel("Enter new delay time (must be greater than the minimal interval in timestamps):")
+        self.displayTimePrompt1 = QLabel("Enter new delay time (must be less than the minimal interval in timestamps):")
         self.displayTime = QLineEdit()
         self.displayTimePrompt1.setHidden(True)
         self.displayTime.setHidden(True)
@@ -217,7 +244,21 @@ class ChangeFileWindowTrivial(QWidget):
         displayTimeLayout.addWidget(self.displayTimeName, 1, 0)
         displayTimeLayout.addWidget(self.displayTimePrompt1, 2, 0)
         displayTimeLayout.addWidget(self.displayTime, 3, 0)
-        layout.addLayout(displayTimeLayout, 2, 2)
+        layout.addLayout(displayTimeLayout, 2, 1)
+
+        # module for setting the trivial survey link
+        surveyLinkLayout = QGridLayout()
+        surveyLinkPrompt0 = QLabel("Current survey link for the trivial (with tasks) scenario:")
+        self.surveyLinkName = QLabel(self.INFO["surveyLink"])
+        self.surveyLinkPrompt1 = QLabel("Enter new survey link:")
+        self.surveyLink = QLineEdit()
+        self.surveyLinkPrompt1.setHidden(True)
+        self.surveyLink.setHidden(True)
+        surveyLinkLayout.addWidget(surveyLinkPrompt0, 0, 0)
+        surveyLinkLayout.addWidget(self.surveyLinkName, 1, 0)
+        surveyLinkLayout.addWidget(self.surveyLinkPrompt1, 2, 0)
+        surveyLinkLayout.addWidget(self.surveyLink, 3, 0)
+        layout.addLayout(surveyLinkLayout, 2, 2)
 
         submitLayout = QGridLayout()
         self.editPrompt = QLabel("Press the Edit button to change settings.")
@@ -256,6 +297,8 @@ class ChangeFileWindowTrivial(QWidget):
         self.emergencyTimestamps.setHidden(False)
         self.displayTimePrompt1.setHidden(False)
         self.displayTime.setHidden(False)
+        self.surveyLinkPrompt1.setHidden(False)
+        self.surveyLink.setHidden(False)
 
     def submitButtonClicked(self):
         self.editButton.setHidden(False)
@@ -272,6 +315,8 @@ class ChangeFileWindowTrivial(QWidget):
         self.emergencyTimestamps.setHidden(True)
         self.displayTimePrompt1.setHidden(True)
         self.displayTime.setHidden(True)
+        self.surveyLinkPrompt1.setHidden(True)
+        self.surveyLink.setHidden(True)
 
     def flushToFiles(self):
         if (len(self.video.text()) > 0):
@@ -289,8 +334,13 @@ class ChangeFileWindowTrivial(QWidget):
             self.displayTime.clear()
             self.displayTimeName.setText(self.INFO["displayTime"])
 
+        if (len(self.surveyLink.text()) > 0):
+            self.INFO["surveyLink"] = self.surveyLink.text()
+            self.surveyLink.clear()
+            self.surveyLinkName.setText(self.INFO["surveyLink"])
+
         with open("./storage/trivialFiles.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"]])
+                csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"], self.INFO["surveyLink"]])
 
         if (len(self.taskTimestamps.text()) > 0):
             self.INFO["taskTimestamps"] = self.taskTimestamps.text().split(",")

@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QStackedLayout
 from scripts.experiment_window import ExperimentWindow
 from scripts.info_window import InfoWindow
 from scripts.final_window import FinalWindow
+from scripts.survey_window import SurveyWindow
 import csv
 import datetime
 
@@ -13,11 +14,14 @@ class WindowManager(QWidget):
         self.INFO = {
             "output": [],
             "startTime": datetime.datetime.now(),
+            "participantID": "",
+
             "outputName": "",
             "videoName": "",
             "timestamps": [],
             "taskTimes": [],
-            "displayTime": ""
+            "displayTime": "",
+            "surveyLink": ""
         }
 
         self.scenario = ""
@@ -28,11 +32,13 @@ class WindowManager(QWidget):
 
         # add all windows as class variables to use the window variables
         self.InfoWindow = InfoWindow(self.scenario)
-        self.ExperimentWindow = ExperimentWindow(self.INFO, self.scenario)
+        self.ExperimentWindow = ExperimentWindow(self.INFO, self.scenario, self.videoFinished)
+        self.SurveyWindow = SurveyWindow(self.INFO)
         self.FinalWindow = FinalWindow(self.INFO)
 
         self.layout.addWidget(self.InfoWindow)
         self.layout.addWidget(self.ExperimentWindow)
+        self.layout.addWidget(self.SurveyWindow)
         self.layout.addWidget(self.FinalWindow)
         self.layout.setCurrentIndex(0)
         self.setLayout(self.layout)
@@ -43,9 +49,11 @@ class WindowManager(QWidget):
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoControl)
         else:
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoTrivial)
-        self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
-        self.ExperimentWindow.setCompleteButton(self.FinalWindow.flushToCSV)
-        self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)
+        self.SurveyWindow.setSubmitButton(self.submitButtonClicked)
+        self.SurveyWindow.setSubmitButton(self.FinalWindow.flushToCSV)
+        #self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
+        #self.ExperimentWindow.setCompleteButton(self.FinalWindow.flushToCSV)
+        #self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)
 
     def initializeINFO(self):
         with open("./storage/mode.csv", newline='') as fileName:
@@ -59,6 +67,7 @@ class WindowManager(QWidget):
                     self.INFO["videoName"] = row[0]
                     self.INFO["outputName"] = row[1]
                     self.INFO["displayTime"] = row[2]
+                    self.INFO["surveyLink"] = row[3]
             with open("./storage/controlTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
@@ -70,6 +79,7 @@ class WindowManager(QWidget):
                     self.INFO["videoName"] = row[0]
                     self.INFO["outputName"] = row[1]
                     self.INFO["displayTime"] = row[2]
+                    self.INFO["surveyLink"] = row[3]
             with open("./storage/trivialEmergencyTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
@@ -81,13 +91,16 @@ class WindowManager(QWidget):
 
     def readyButtonClicked(self):
         self.layout.setCurrentIndex(1)
-    
-    def completeButtonClicked(self):
-        self.layout.setCurrentIndex(2)
 
-    def returnToStartButtonClicked(self):
-        self.layout.setCurrentIndex(0)
-        self.INFO["output"].clear()
+    def videoFinished(self):
+        self.layout.setCurrentIndex(2)
+    
+    def submitButtonClicked(self):
+        self.layout.setCurrentIndex(3)
+
+    #def returnToStartButtonClicked(self):
+    #    self.layout.setCurrentIndex(0)
+    #    self.INFO["output"].clear()
 
 class MainWindow(QMainWindow):
     def __init__(self):

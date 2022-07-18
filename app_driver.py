@@ -34,8 +34,8 @@ class WindowManager(QWidget):
         # add all windows as class variables to use the window variables
         self.InfoWindow = InfoWindow(self.scenario)
         self.ExperimentWindow = ExperimentWindow(self.INFO, self.scenario, self.videoFinished)
-        self.SurveyWindow = SurveyWindow(self.INFO)
         self.FinalWindow = FinalWindow(self.INFO)
+        self.SurveyWindow = SurveyWindow(self.INFO, self.submitButtonClicked, self.FinalWindow.flushToCSV)
 
         self.layout.addWidget(self.InfoWindow)
         self.layout.addWidget(self.ExperimentWindow)
@@ -50,8 +50,8 @@ class WindowManager(QWidget):
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoControl)
         else:
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoTrivial)
-        self.SurveyWindow.setSubmitButton(self.submitButtonClicked)
-        self.SurveyWindow.setSubmitButton(self.FinalWindow.flushToCSV)
+        #self.SurveyWindow.setSubmitButton(self.submitButtonClicked)
+        #self.SurveyWindow.setSubmitButton(self.FinalWindow.flushToCSV)
         self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
         #self.ExperimentWindow.setCompleteButton(self.FinalWindow.flushToCSV)
         #self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)

@@ -5,6 +5,7 @@ from scripts.final_window import FinalWindow
 from scripts.survey_window import SurveyWindow
 import csv
 import datetime
+import time
 
 # Houses all windows
 class WindowManager(QWidget):
@@ -51,7 +52,7 @@ class WindowManager(QWidget):
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoTrivial)
         self.SurveyWindow.setSubmitButton(self.submitButtonClicked)
         self.SurveyWindow.setSubmitButton(self.FinalWindow.flushToCSV)
-        #self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
+        self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
         #self.ExperimentWindow.setCompleteButton(self.FinalWindow.flushToCSV)
         #self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)
 
@@ -93,6 +94,10 @@ class WindowManager(QWidget):
         self.layout.setCurrentIndex(1)
 
     def videoFinished(self):
+        self.layout.setCurrentIndex(2)
+    
+    def completeButtonClicked(self):
+        time.sleep(5)
         self.layout.setCurrentIndex(2)
     
     def submitButtonClicked(self):

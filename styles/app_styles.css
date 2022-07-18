@@ -1,4 +1,23 @@
 /*buttons*/
+
+#emergencyButton, #taskButton, #spacer, #readyButton, #completeButton {
+    height: 100px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#spacer {
+    background-color: transparent;
+}
+
+#emergencyButton {
+    background-color: red;
+}
+
+#taskButton {
+    background-color: greenyellow;
+}
+
 #readyButton {
 
 }

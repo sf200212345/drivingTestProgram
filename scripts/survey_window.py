@@ -19,9 +19,12 @@ class SurveyWindow(QWidget):
         self.participantID.setObjectName("participantID")
         self.submitButton.setObjectName("submitButton")
 
-        layout.addWidget(iDInstructions, 1, 1, 1, 2)
-        layout.addWidget(self.participantID, 2, 1, 1, 2)
-        layout.addWidget(self.submitButton, 3, 1, 1, 2)
+        inputLayout = QGridLayout()
+        inputLayout.addWidget(iDInstructions, 0, 0, 1, 2)
+        inputLayout.addWidget(self.participantID, 1, 0, 1, 2)
+        layout.addWidget(self.submitButton, 2, 1, 1, 2)
+
+        layout.addLayout(inputLayout, 1, 1, 1, 2)
         layout.addWidget(QWidget(), 0, 3)
         layout.addWidget(QWidget(), 3, 0)
 

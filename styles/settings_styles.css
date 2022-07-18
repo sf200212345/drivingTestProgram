@@ -1,0 +1,13 @@
+#changeWindowButton {
+    max-width: 200px;
+    height: 200px;
+}
+
+QLabel, QLineEdit {
+    max-width: 500px;
+}
+
+#bold {
+    font-weight: bold;
+    text-decoration: underline;
+}

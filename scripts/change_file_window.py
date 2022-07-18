@@ -9,11 +9,13 @@ class ChangeFileWindowControl(QWidget):
         layout = QGridLayout()
 
         self.changeWindowButton = QPushButton("Current Mode: Control\nPress to switch")
+        self.changeWindowButton.setObjectName("changeWindowButton")
         layout.addWidget(self.changeWindowButton, 0, 0)
 
         # module for setting the control video name
         videoLayout = QGridLayout()
         videoPrompt0 = QLabel("Current video name for the control (no tasks) scenario:")
+        videoPrompt0.setObjectName("bold")
         self.videoName = QLabel(self.INFO["videoName"])
         self.videoPrompt1 = QLabel("Enter new video name (including file extension):")
         self.video = QLineEdit()
@@ -28,6 +30,7 @@ class ChangeFileWindowControl(QWidget):
         # module for setting the control output file name
         outputLayout = QGridLayout()
         outputPrompt0 = QLabel("Current output file name for the control (no tasks) scenario:")
+        outputPrompt0.setObjectName("bold")
         self.outputName = QLabel(self.INFO["outputName"])
         self.outputPrompt1 = QLabel("Enter new output file name (including file extension):")
         self.output = QLineEdit()
@@ -42,6 +45,7 @@ class ChangeFileWindowControl(QWidget):
         # module for setting the control video timestamps
         timestampsLayout = QGridLayout()
         timestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the control (no tasks) scenario:")
+        timestampsPrompt0.setObjectName("bold")
         self.timestampsName = QLabel(",".join(self.INFO["timestamps"]))
         self.timestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
         self.timestamps = QLineEdit()
@@ -51,11 +55,12 @@ class ChangeFileWindowControl(QWidget):
         timestampsLayout.addWidget(self.timestampsName, 1, 0)
         timestampsLayout.addWidget(self.timestampsPrompt1, 2, 0)
         timestampsLayout.addWidget(self.timestamps, 3, 0)
-        layout.addLayout(timestampsLayout, 1, 1)
+        layout.addLayout(timestampsLayout, 1, 2)
 
         # module for setting the control button display time
         displayTimeLayout = QGridLayout()
         displayTimePrompt0 = QLabel("Current delay time for button display for the control (no tasks) scenario:")
+        displayTimePrompt0.setObjectName("bold")
         self.displayTimeName = QLabel(self.INFO["displayTime"])
         self.displayTimePrompt1 = QLabel("Enter new delay time (must be less than the minimal interval in timestamps):")
         self.displayTime = QLineEdit()
@@ -65,12 +70,14 @@ class ChangeFileWindowControl(QWidget):
         displayTimeLayout.addWidget(self.displayTimeName, 1, 0)
         displayTimeLayout.addWidget(self.displayTimePrompt1, 2, 0)
         displayTimeLayout.addWidget(self.displayTime, 3, 0)
-        layout.addLayout(displayTimeLayout, 1, 2)
+        layout.addLayout(displayTimeLayout, 2, 1)
 
         # module for setting the control survey link
         surveyLinkLayout = QGridLayout()
         surveyLinkPrompt0 = QLabel("Current survey link for the control (no tasks) scenario:")
+        surveyLinkPrompt0.setObjectName("bold")
         self.surveyLinkName = QLabel(self.INFO["surveyLink"])
+        self.surveyLinkName.setWordWrap(True)
         self.surveyLinkPrompt1 = QLabel("Enter new survey link:")
         self.surveyLink = QLineEdit()
         self.surveyLinkPrompt1.setHidden(True)
@@ -79,12 +86,14 @@ class ChangeFileWindowControl(QWidget):
         surveyLinkLayout.addWidget(self.surveyLinkName, 1, 0)
         surveyLinkLayout.addWidget(self.surveyLinkPrompt1, 2, 0)
         surveyLinkLayout.addWidget(self.surveyLink, 3, 0)
-        layout.addLayout(surveyLinkLayout, 2, 1)
+        layout.addLayout(surveyLinkLayout, 2, 2)
 
         submitLayout = QGridLayout()
         self.editPrompt = QLabel("Press the Edit button to change settings.")
+        self.editPrompt.setObjectName("bold")
         self.editButton = QPushButton("Edit")
-        self.submitPrompt = QLabel("Leave the textbox of fields you don't want to change blank. Press the Submit button to preserve changes.")
+        self.submitPrompt = QLabel("Leave the textbox of fields you don't want to change blank.\nPress the Submit button to preserve changes.")
+        self.submitPrompt.setObjectName("bold")
         self.submitButton = QPushButton("Submit")
         submitLayout.addWidget(self.editPrompt, 0, 0)
         submitLayout.addWidget(self.editButton, 1, 0)
@@ -174,11 +183,13 @@ class ChangeFileWindowTrivial(QWidget):
         layout = QGridLayout()
 
         self.changeWindowButton = QPushButton("Current Mode: Trivial\nPress to switch")
+        self.changeWindowButton.setObjectName("changeWindowButton")
         layout.addWidget(self.changeWindowButton, 0, 0)
 
         # module for setting the trivial video name
         videoLayout = QGridLayout()
         videoPrompt0 = QLabel("Current video name for the trivial (with tasks) scenario:")
+        videoPrompt0.setObjectName("bold")
         self.videoName = QLabel(self.INFO["videoName"])
         self.videoPrompt1 = QLabel("Enter new video name (including file extension):")
         self.video = QLineEdit()
@@ -193,6 +204,7 @@ class ChangeFileWindowTrivial(QWidget):
         # module for setting the trival output file name
         outputLayout = QGridLayout()
         outputPrompt0 = QLabel("Current output file name for the trivial (with tasks) scenario:")
+        outputPrompt0.setObjectName("bold")
         self.outputName = QLabel(self.INFO["outputName"])
         self.outputPrompt1 = QLabel("Enter new output file name (including file extension):")
         self.output = QLineEdit()
@@ -207,6 +219,7 @@ class ChangeFileWindowTrivial(QWidget):
         # module for setting the trivial video task timestamps
         timestampsLayout = QGridLayout()
         taskTimestampsPrompt0 = QLabel("Current video prompt timestamps (tasks) for the trivial (with tasks) scenario:")
+        taskTimestampsPrompt0.setObjectName("bold")
         self.taskTimestampsName = QLabel(",".join(self.INFO["taskTimestamps"]))
         self.taskTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
         self.taskTimestamps = QLineEdit()
@@ -221,6 +234,7 @@ class ChangeFileWindowTrivial(QWidget):
         # module for setting the trivial video emergency timestamps
         timestampsLayout1 = QGridLayout()
         emergencyTimestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the trivial (with tasks) scenario:")
+        emergencyTimestampsPrompt0.setObjectName("bold")
         self.emergencyTimestampsName = QLabel(",".join(self.INFO["emergencyTimestamps"]))
         self.emergencyTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
         self.emergencyTimestamps = QLineEdit()
@@ -235,6 +249,7 @@ class ChangeFileWindowTrivial(QWidget):
         # module for setting the trivial button display time
         displayTimeLayout = QGridLayout()
         displayTimePrompt0 = QLabel("Current delay time for button display for the trivial (with tasks) scenario:")
+        displayTimePrompt0.setObjectName("bold")
         self.displayTimeName = QLabel(self.INFO["displayTime"])
         self.displayTimePrompt1 = QLabel("Enter new delay time (must be less than the minimal interval in timestamps):")
         self.displayTime = QLineEdit()
@@ -249,7 +264,9 @@ class ChangeFileWindowTrivial(QWidget):
         # module for setting the trivial survey link
         surveyLinkLayout = QGridLayout()
         surveyLinkPrompt0 = QLabel("Current survey link for the trivial (with tasks) scenario:")
+        surveyLinkPrompt0.setObjectName("bold")
         self.surveyLinkName = QLabel(self.INFO["surveyLink"])
+        self.surveyLinkName.setWordWrap(True)
         self.surveyLinkPrompt1 = QLabel("Enter new survey link:")
         self.surveyLink = QLineEdit()
         self.surveyLinkPrompt1.setHidden(True)
@@ -262,8 +279,10 @@ class ChangeFileWindowTrivial(QWidget):
 
         submitLayout = QGridLayout()
         self.editPrompt = QLabel("Press the Edit button to change settings.")
+        self.editPrompt.setObjectName("bold")
         self.editButton = QPushButton("Edit")
-        self.submitPrompt = QLabel("Leave the textbox of fields you don't want to change blank. Press the Submit button to preserve changes.")
+        self.submitPrompt = QLabel("Leave the textbox of fields you don't want to change blank.\nPress the Submit button to preserve changes.")
+        self.submitPrompt.setObjectName("bold")
         self.submitButton = QPushButton("Submit")
         submitLayout.addWidget(self.editPrompt, 0, 0)
         submitLayout.addWidget(self.editButton, 1, 0)

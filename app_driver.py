@@ -50,11 +50,7 @@ class WindowManager(QWidget):
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoControl)
         else:
             self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoTrivial)
-        #self.SurveyWindow.setSubmitButton(self.submitButtonClicked)
-        #self.SurveyWindow.setSubmitButton(self.FinalWindow.flushToCSV)
         self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
-        #self.ExperimentWindow.setCompleteButton(self.FinalWindow.flushToCSV)
-        #self.FinalWindow.setReturnToStartButton(self.returnToStartButtonClicked)
 
     def initializeINFO(self):
         with open("./storage/mode.csv", newline='') as fileName:
@@ -96,16 +92,13 @@ class WindowManager(QWidget):
     def videoFinished(self):
         self.layout.setCurrentIndex(2)
     
+    # now the "open link" button
     def completeButtonClicked(self):
         time.sleep(5)
         self.layout.setCurrentIndex(2)
     
     def submitButtonClicked(self):
         self.layout.setCurrentIndex(3)
-
-    #def returnToStartButtonClicked(self):
-    #    self.layout.setCurrentIndex(0)
-    #    self.INFO["output"].clear()
 
 class MainWindow(QMainWindow):
     def __init__(self):

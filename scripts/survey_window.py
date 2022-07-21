@@ -11,26 +11,39 @@ class SurveyWindow(QWidget):
         self.clicked = submitButtonClicked
         self.flush = flushToCSV
         self.INFO = INFO
+
         layout = QGridLayout()
 
-        iDInstructions = QLabel('Please enter your participant ID here:')
+        self.surveyInstructions = QLabel("Please press the button below to open the survey.\nMake sure to remember your participant ID")
+        self.surveyButton = QPushButton("Open Survey")
+
+        self.iDInstructions = QLabel('Please enter your participant ID here:')
         self.participantID = QLineEdit()
         self.submitButton = QPushButton("Submit")
         self.validationPrompt = QLabel()
         
-        iDInstructions.setObjectName("iDInstructions")
+        self.surveyInstructions.setObjectName("surveyInstructions")
+        self.surveyButton.setObjectName("surveyButton")
+        self.iDInstructions.setObjectName("iDInstructions")
         self.participantID.setObjectName("participantID")
         self.submitButton.setObjectName("submitButton")
         self.validationPrompt.setObjectName("validationPrompt")
 
+        layout.addWidget(self.surveyInstructions, 1, 1, 1, 2)
+        layout.addWidget(self.surveyButton, 2, 1, 1, 2)
+
         inputLayout = QGridLayout()
-        inputLayout.addWidget(iDInstructions, 0, 0, 1, 2)
+        inputLayout.addWidget(self.iDInstructions, 0, 0, 1, 2)
         inputLayout.addWidget(self.participantID, 1, 0, 1, 2)
 
         submitLayout = QGridLayout()
         submitLayout.addWidget(self.validationPrompt, 0, 0, 1, 2)
         submitLayout.addWidget(self.submitButton, 1, 0, 1, 2)
-        
+
+        self.iDInstructions.setHidden(True)
+        self.participantID.setHidden(True)
+        self.validationPrompt.setHidden(True)
+        self.submitButton.setHidden(True)
 
         layout.addLayout(inputLayout, 1, 1, 1, 2)
         layout.addLayout(submitLayout, 2, 1, 1, 2)
@@ -40,9 +53,6 @@ class SurveyWindow(QWidget):
         self.setLayout(layout)
 
         self.submitButton.clicked.connect(self.submitParticipantID)
-
-    def setSubmitButton(self, parentFunc):
-        self.submitButton.clicked.connect(parentFunc)
 
     def submitParticipantID(self):
         if len(self.participantID.text()) == 0:

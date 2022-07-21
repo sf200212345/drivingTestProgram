@@ -1,4 +1,6 @@
 from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget, QPushButton, QLineEdit
+import webbrowser
+import time
 
 '''
 Prompts the user to enter the participantID and then submit
@@ -52,6 +54,7 @@ class SurveyWindow(QWidget):
 
         self.setLayout(layout)
 
+        self.surveyButton.clicked.connect(self.surveyButtonClicked)
         self.submitButton.clicked.connect(self.submitParticipantID)
 
     def submitParticipantID(self):
@@ -63,3 +66,14 @@ class SurveyWindow(QWidget):
             self.INFO["participantID"] = self.participantID.text()
             self.flush()
             self.clicked()
+    
+    def surveyButtonClicked(self):
+        webbrowser.open_new(self.INFO["surveyLink"])
+        time.sleep(5)
+        self.surveyInstructions.setHidden(True)
+        self.surveyButton.setHidden(True)
+        self.iDInstructions.setHidden(False)
+        self.participantID.setHidden(False)
+        self.validationPrompt.setHidden(False)
+        self.submitButton.setHidden(False)
+        

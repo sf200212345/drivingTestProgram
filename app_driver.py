@@ -46,11 +46,7 @@ class WindowManager(QWidget):
 
         # connect transition buttons to functions in WindowManager
         self.InfoWindow.setReadyButton(self.readyButtonClicked)
-        if self.scenario == "C":
-            self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoControl)
-        else:
-            self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideoTrivial)
-        self.ExperimentWindow.setCompleteButton(self.completeButtonClicked)
+        self.InfoWindow.setReadyButton(self.ExperimentWindow.renderVideo)
 
     def initializeINFO(self):
         with open("./storage/mode.csv", newline='') as fileName:
@@ -90,11 +86,6 @@ class WindowManager(QWidget):
         self.layout.setCurrentIndex(1)
 
     def videoFinished(self):
-        self.layout.setCurrentIndex(2)
-    
-    # now the "open link" button
-    def completeButtonClicked(self):
-        time.sleep(5)
         self.layout.setCurrentIndex(2)
     
     def submitButtonClicked(self):

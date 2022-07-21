@@ -3,8 +3,6 @@ from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtMultimediaWidgets import QVideoWidget
 from PyQt6.QtCore import QUrl
 import datetime
-import webbrowser
-import time
 
 '''
 Displays the video and two/one buttons to press depending on the selected scenario
@@ -51,7 +49,7 @@ class ExperimentWindow(QWidget):
             self.taskButton = QPushButton("Do Task")
             self.taskButton.setObjectName("taskButton")
             layout.addWidget(self.taskButton, 3, 2, 1, 1)
-        self.completeButton = QPushButton("Open Survey")
+            self.taskButton.setHidden(True)
         
         self.player = QMediaPlayer()
         self.video = QVideoWidget()
@@ -62,12 +60,12 @@ class ExperimentWindow(QWidget):
         self.player.setSource(QUrl.fromLocalFile(self.INFO["videoName"]))
 
         self.emergencyButton.setObjectName("emergencyButton")
-        self.completeButton.setObjectName("completeButton")
         self.video.setObjectName("video")
 
         layout.addWidget(self.video, 0, 0, 3, 4)
         layout.addWidget(self.emergencyButton, 3, 1, 1, 1)
-        layout.addWidget(self.completeButton, 1, 1, 2, 2)
+        self.emergencyButton.setHidden(True)
+        
         self.buttonSpacer1 = QPushButton()
         self.buttonSpacer2 = QPushButton()
         self.buttonSpacer1.setObjectName("spacer")
@@ -79,48 +77,17 @@ class ExperimentWindow(QWidget):
         if scenario == "C":
             self.emergencyButton.clicked.connect(self.emergencyButtonClickedControl)
             self.player.positionChanged.connect(self.positionChangedControl)
-            #self.player.playbackStateChanged.connect(self.playbackStateChangedControl)
         else:
             self.emergencyButton.clicked.connect(self.emergencyButtonClickedTrivial)
             self.taskButton.clicked.connect(self.taskButtonClickedTrivial)
             self.player.positionChanged.connect(self.positionChangedTrivialEmergency)
             self.player.positionChanged.connect(self.positionChangedTrivialTask)
         self.player.playbackStateChanged.connect(self.playbackStateChanged)
-        self.completeButton.clicked.connect(self.completeButtonClicked)
-
-    def completeButtonClicked(self):
-        webbrowser.open_new(self.INFO["surveyLink"])
         
     # render video and start on ready button click
-    def renderVideoControl(self):
-        self.video.setHidden(False)
-        self.completeButton.setHidden(True)
-        self.emergencyButton.setHidden(True)
-
-        self.clicked = True
-        self.currTimestamp = 0
-        self.output.clear()
-        
+    def renderVideo(self):
         self.player.play()
         self.INFO["startTime"] = datetime.datetime.now()
-
-    def renderVideoTrivial(self):
-        self.video.setHidden(False)
-        self.completeButton.setHidden(True)
-        self.emergencyButton.setHidden(True)
-        self.taskButton.setHidden(True)
-
-        self.emergencyClicked = True
-        self.taskClicked = True
-        self.currEmergency = 0
-        self.currTask = 0
-        self.output.clear()
-        
-        self.player.play()
-        self.INFO["startTime"] = datetime.datetime.now()
-        
-    def setCompleteButton(self, parentFunc):
-        self.completeButton.clicked.connect(parentFunc)
     
     def emergencyButtonClickedControl(self):
         self.output.append(datetime.datetime.now())
@@ -178,19 +145,5 @@ class ExperimentWindow(QWidget):
 
     def playbackStateChanged(self, state):
         if (state == QMediaPlayer.PlaybackState.StoppedState):
-            self.video.setHidden(True)
-            self.emergencyButton.setHidden(True)
-            self.completeButton.setHidden(False)
-            self.taskButton.setHidden(True)
             self.INFO["output"] = self.output
-            #webbrowser.open_new(self.INFO["surveyLink"])
-            #time.sleep(5)
-            #self.videoFinished()
-
-    #def playbackStateChangedTrivial(self, state):
-    #    if (state == QMediaPlayer.PlaybackState.StoppedState):
-            #self.video.setHidden(True)
-            #self.emergencyButton.setHidden(True)
-            #self.taskButton.setHidden(True)
-            #self.completeButton.setHidden(False)
-    #        self.INFO["output"] = self.output
+            self.videoFinished()

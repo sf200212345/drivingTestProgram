@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget, QPushButton
+from PyQt6.QtWidgets import QGridLayout, QWidget, QPushButton, QTextEdit
 
 '''
 Tells the user what to do in the incoming experiment
@@ -11,11 +11,26 @@ class InfoWindow(QWidget):
         
         layout = QGridLayout()
 
-        instructions = QLabel('Instructions for control scenario:\nPress the "Emergency" button when an emergency situation arises.')
+        instructions = QTextEdit()
+        instructions.setHtml(
+            '''
+            <div style="text-align: center">
+                <span style="background-color: yellow">Instructions</span> for <em>control</em> scenario: Press the <span style="font-weight: bold">Emergency</span> button when an <span style="text-decoration: underline">emergency</span> situation arises.
+            </div>
+            '''
+        )
+        instructions.setReadOnly(True)
         self.readyButton = QPushButton("Ready")
         
         if scenario != "C":
-            instructions.setText('Instructions for trivial scenario:\nPress the "Do Task" button when prompted. Press the "Emergency" button when an emergency situation arises.')
+            instructions.setHtml(
+            '''
+            <div style="text-align: center">
+                <span style="background-color: yellow">Instructions</span> for <em>trivial</em> scenario: Press the <span style="font-weight: bold">Do Task</span> button when <span style="text-decoration: underline">prompted</span>.
+                Press the <span style="font-weight: bold">Emergency</span> button when an <span style="text-decoration: underline">emergency</span> situation arises.
+            </div>
+            '''
+        )
         
         instructions.setObjectName("instructions")
         self.readyButton.setObjectName("readyButton")

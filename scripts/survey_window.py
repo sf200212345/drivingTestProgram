@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget, QPushButton, QLineEdit
+from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget, QPushButton, QLineEdit, QTextEdit
 import webbrowser
 import time
 
@@ -16,7 +16,17 @@ class SurveyWindow(QWidget):
 
         layout = QGridLayout()
 
-        self.surveyInstructions = QLabel("Please press the button below to open the survey.\nMake sure to remember your participant ID")
+        self.surveyInstructions = QTextEdit()
+        self.surveyInstructions.setHtml(
+            '''
+            <div style="text-align: center">
+                <span style="background-color: yellow">Please</span> press the <em>button</em> below to open the <span style="font-weight: bold">survey</span>.
+                Make sure to <span style="text-decoration: underline">remember</span> your participant ID.
+            </div>
+            '''
+        )
+        self.surveyInstructions.setReadOnly(True)
+        
         self.surveyButton = QPushButton("Open Survey")
 
         self.iDInstructions = QLabel('Please enter your participant ID here:')

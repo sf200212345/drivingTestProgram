@@ -1,8 +1,13 @@
 /*buttons*/
-#emergencyButton, #taskButton, #spacer, #readyButton, #surveyButton, #submitButton {
+#emergencyButton, #taskButton, #spacer {
     height: 100px;
     font-size: 30px;
     font-weight: bold;
+}
+
+#readyButton, #surveyButton, #submitButton {
+    height: 50px;
+    font-size: 20px;
 }
 
 #spacer {
@@ -17,10 +22,19 @@
     background-color: greenyellow;
 }
 
-
 /*text*/
-
 #validationPrompt {
     color: red;
     font-style: italic;
+}
+
+#instructions, #surveyInstructions, #iDInstructions, #finishMessage {
+    background-color: transparent;
+    border: none;
+    max-height: 150px;
+    font-size: 24px;
+}
+
+#participantID {
+    font-size: 20px;
 }

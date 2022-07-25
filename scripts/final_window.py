@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QLabel, QGridLayout, QWidget
+from PyQt6.QtWidgets import QTextEdit, QGridLayout, QWidget
 import csv
 
 '''
@@ -17,7 +17,8 @@ class FinalWindow(QWidget):
         self.timestamps.sort()
         layout = QGridLayout()
 
-        finishMessage = QLabel("Finished! Close the window to end the experiment.")
+        finishMessage = QTextEdit('<div style="text-align: center">Finished! Close the window to end the experiment.</div>')
+        finishMessage.setReadOnly(True)
 
         finishMessage.setObjectName("finishMessage")
 

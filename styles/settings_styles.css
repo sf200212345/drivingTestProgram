@@ -11,3 +11,7 @@ QLabel, QLineEdit {
     font-weight: bold;
     text-decoration: underline;
 }
+
+#edit-btn, #sbt-btn {
+    height: 100px;
+}

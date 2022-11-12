@@ -10,6 +10,10 @@
     font-size: 20px;
 }
 
+#readyButton {
+    margin-top: 100px;
+}
+
 #spacer {
     background-color: transparent;
 }
@@ -28,7 +32,15 @@
     font-style: italic;
 }
 
-#instructions, #surveyInstructions, #iDInstructions, #finishMessage {
+#instructions {
+    background-color: transparent;
+    border: none;
+    max-height: 500px;
+    font-size: 20px;
+    margin-top: 100px;
+}
+
+#surveyInstructions, #iDInstructions, #finishMessage {
     background-color: transparent;
     border: none;
     max-height: 150px;

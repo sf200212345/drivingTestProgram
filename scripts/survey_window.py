@@ -20,8 +20,8 @@ class SurveyWindow(QWidget):
         self.surveyInstructions.setHtml(
             '''
             <div style="text-align: center">
-                <span style="background-color: yellow">Please</span> press the <em>button</em> below to open the <span style="font-weight: bold">survey</span>.
-                Make sure to <span style="text-decoration: underline">remember</span> your participant ID.
+                Please press the button below to open the survey.
+                Make sure to remember your participant ID.
             </div>
             '''
         )

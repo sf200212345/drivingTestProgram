@@ -46,7 +46,7 @@ class ExperimentWindow(QWidget):
 
         self.emergencyButton = QPushButton("Emergency")
         if scenario == "T":
-            self.taskButton = QPushButton("Do Task")
+            self.taskButton = QPushButton("I am paying attention")
             self.taskButton.setObjectName("taskButton")
             layout.addWidget(self.taskButton, 3, 2, 1, 1)
             self.taskButton.setHidden(True)

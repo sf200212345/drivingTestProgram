@@ -47,11 +47,11 @@ class ChangeFileWindowControl(QWidget):
 
         # module for setting the control video timestamps
         timestampsLayout = QGridLayout()
-        timestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the control (no tasks) scenario:")
+        timestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the control (no tasks) scenario:\nEither seconds or MM:SS:MS format are acceptable.")
         timestampsPrompt0.setObjectName("bold")
         self.timestampsName = QLabel(",".join(self.INFO["timestamps"]))
         self.timestampsName.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.timestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
+        self.timestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list:")
         self.timestamps = QLineEdit()
         self.timestampsPrompt1.setHidden(True)
         self.timestamps.setHidden(True)
@@ -63,11 +63,11 @@ class ChangeFileWindowControl(QWidget):
 
         # module for setting the control button display time
         displayTimeLayout = QGridLayout()
-        displayTimePrompt0 = QLabel("Current delay time for button display for the control (no tasks) scenario:")
+        displayTimePrompt0 = QLabel("Current delay time for button display for the control (no tasks) scenario:\nPlease only enter a single number.")
         displayTimePrompt0.setObjectName("bold")
         self.displayTimeName = QLabel(self.INFO["displayTime"])
         self.displayTimeName.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.displayTimePrompt1 = QLabel("Enter new delay time (must be less than the minimal interval in timestamps):")
+        self.displayTimePrompt1 = QLabel("Enter new delay time in SECONDS (must be less than the minimal interval in timestamps):")
         self.displayTime = QLineEdit()
         self.displayTimePrompt1.setHidden(True)
         self.displayTime.setHidden(True)
@@ -154,30 +154,30 @@ class ChangeFileWindowControl(QWidget):
 
     def flushToFiles(self):
         if (len(self.video.text()) > 0):
-            self.INFO["videoName"] = self.video.text()
+            self.INFO["videoName"] = self.video.text().strip()
             self.video.clear()
             self.videoName.setText(self.INFO["videoName"])
 
         if (len(self.output.text()) > 0):
-            self.INFO["outputName"] = self.output.text()
+            self.INFO["outputName"] = self.output.text().strip()
             self.output.clear()
             self.outputName.setText(self.INFO["outputName"])
 
         if (len(self.displayTime.text()) > 0):
-            self.INFO["displayTime"] = self.displayTime.text()
+            self.INFO["displayTime"] = self.displayTime.text().strip()
             self.displayTime.clear()
             self.displayTimeName.setText(self.INFO["displayTime"])
 
         if (len(self.surveyLink.text()) > 0):
-            self.INFO["surveyLink"] = self.surveyLink.text()
+            self.INFO["surveyLink"] = self.surveyLink.text().strip()
             self.surveyLink.clear()
             self.surveyLinkName.setText(self.INFO["surveyLink"])
 
         with open("./storage/controlFiles.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"], self.INFO["surveyLink"]])
+            csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"], self.INFO["surveyLink"]])
 
         if (len(self.timestamps.text()) > 0):
-            self.INFO["timestamps"] = self.timestamps.text().split(",")
+            self.INFO["timestamps"] = [time.strip() for time in self.timestamps.text().split(",")]
             self.timestamps.clear()
             self.timestampsName.setText(",".join(self.INFO["timestamps"]))
             with open("./storage/controlTimes.csv", "w", newline='') as writer:
@@ -228,11 +228,11 @@ class ChangeFileWindowTrivial(QWidget):
 
         # module for setting the trivial video task timestamps
         timestampsLayout = QGridLayout()
-        taskTimestampsPrompt0 = QLabel("Current video prompt timestamps (tasks) for the trivial (with tasks) scenario:")
+        taskTimestampsPrompt0 = QLabel("Current video prompt timestamps (tasks) for the trivial (with tasks) scenario:\nEither seconds or MM:SS:MS format are acceptable.")
         taskTimestampsPrompt0.setObjectName("bold")
         self.taskTimestampsName = QLabel(",".join(self.INFO["taskTimestamps"]))
         self.taskTimestampsName.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.taskTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
+        self.taskTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list:")
         self.taskTimestamps = QLineEdit()
         self.taskTimestampsPrompt1.setHidden(True)
         self.taskTimestamps.setHidden(True)
@@ -244,11 +244,11 @@ class ChangeFileWindowTrivial(QWidget):
 
         # module for setting the trivial video emergency timestamps
         timestampsLayout1 = QGridLayout()
-        emergencyTimestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the trivial (with tasks) scenario:")
+        emergencyTimestampsPrompt0 = QLabel("Current video prompt timestamps (emergencies) for the trivial (with tasks) scenario:\nEither seconds or MM:SS:MS format are acceptable.")
         emergencyTimestampsPrompt0.setObjectName("bold")
         self.emergencyTimestampsName = QLabel(",".join(self.INFO["emergencyTimestamps"]))
         self.emergencyTimestampsName.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.emergencyTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list (no spaces):")
+        self.emergencyTimestampsPrompt1 = QLabel("Enter new timestamps as a comma-separated list:")
         self.emergencyTimestamps = QLineEdit()
         self.emergencyTimestampsPrompt1.setHidden(True)
         self.emergencyTimestamps.setHidden(True)
@@ -260,11 +260,11 @@ class ChangeFileWindowTrivial(QWidget):
 
         # module for setting the trivial button display time
         displayTimeLayout = QGridLayout()
-        displayTimePrompt0 = QLabel("Current delay time for button display for the trivial (with tasks) scenario:")
+        displayTimePrompt0 = QLabel("Current delay time for button display for the trivial (with tasks) scenario:\nPlease only enter a single number.")
         displayTimePrompt0.setObjectName("bold")
         self.displayTimeName = QLabel(self.INFO["displayTime"])
         self.displayTimeName.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.displayTimePrompt1 = QLabel("Enter new delay time (must be less than the minimal interval in timestamps):")
+        self.displayTimePrompt1 = QLabel("Enter new delay time in SECONDS (must be less than the minimal interval in timestamps):")
         self.displayTime = QLineEdit()
         self.displayTimePrompt1.setHidden(True)
         self.displayTime.setHidden(True)
@@ -355,37 +355,37 @@ class ChangeFileWindowTrivial(QWidget):
 
     def flushToFiles(self):
         if (len(self.video.text()) > 0):
-            self.INFO["videoName"] = self.video.text()
+            self.INFO["videoName"] = self.video.text().strip()
             self.video.clear()
             self.videoName.setText(self.INFO["videoName"])
 
         if (len(self.output.text()) > 0):
-            self.INFO["outputName"] = self.output.text()
+            self.INFO["outputName"] = self.output.text().strip()
             self.output.clear()
             self.outputName.setText(self.INFO["outputName"])
 
         if (len(self.displayTime.text()) > 0):
-            self.INFO["displayTime"] = self.displayTime.text()
+            self.INFO["displayTime"] = self.displayTime.text().strip()
             self.displayTime.clear()
             self.displayTimeName.setText(self.INFO["displayTime"])
 
         if (len(self.surveyLink.text()) > 0):
-            self.INFO["surveyLink"] = self.surveyLink.text()
+            self.INFO["surveyLink"] = self.surveyLink.text().strip()
             self.surveyLink.clear()
             self.surveyLinkName.setText(self.INFO["surveyLink"])
 
         with open("./storage/trivialFiles.csv", "w", newline='') as writer:
-                csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"], self.INFO["surveyLink"]])
+            csv.writer(writer).writerow([self.INFO["videoName"], self.INFO["outputName"], self.INFO["displayTime"], self.INFO["surveyLink"]])
 
         if (len(self.taskTimestamps.text()) > 0):
-            self.INFO["taskTimestamps"] = self.taskTimestamps.text().split(",")
+            self.INFO["taskTimestamps"] = [time.strip() for time in self.taskTimestamps.text().split(",")]
             self.taskTimestamps.clear()
             self.taskTimestampsName.setText(",".join(self.INFO["taskTimestamps"]))
             with open("./storage/trivialTaskTimes.csv", "w", newline='') as writer:
                 csv.writer(writer).writerow(self.INFO["taskTimestamps"])
         
         if (len(self.emergencyTimestamps.text()) > 0):
-            self.INFO["emergencyTimestamps"] = self.emergencyTimestamps.text().split(",")
+            self.INFO["emergencyTimestamps"] = [time.strip() for time in self.emergencyTimestamps.text().split(",")]
             self.emergencyTimestamps.clear()
             self.emergencyTimestampsName.setText(",".join(self.INFO["emergencyTimestamps"]))
             with open("./storage/trivialemergencyTimes.csv", "w", newline='') as writer:

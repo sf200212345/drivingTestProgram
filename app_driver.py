@@ -64,7 +64,14 @@ class WindowManager(QWidget):
             with open("./storage/controlTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
-                    self.INFO["timestamps"] = row
+                    if any(":" in i for i in row):
+                        timestamps = []
+                        for i in row:
+                            temp = i.split(":")
+                            timestamps.append(str(float(temp[0]) * 60 + float(temp[1]) + float(temp[2]) * 0.01))
+                    else:
+                        timestamps = row
+                    self.INFO["timestamps"] = timestamps
         else:
             with open("./storage/trivialFiles.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
@@ -76,11 +83,25 @@ class WindowManager(QWidget):
             with open("./storage/trivialEmergencyTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
-                    self.INFO["timestamps"] = row
+                    if any(":" in i for i in row):
+                        timestamps = []
+                        for i in row:
+                            temp = i.split(":")
+                            timestamps.append(str(float(temp[0]) * 60 + float(temp[1]) + float(temp[2]) * 0.01))
+                    else:
+                        timestamps = row
+                    self.INFO["timestamps"] = timestamps
             with open("./storage/trivialTaskTimes.csv", newline='') as fileName:
                 reader = csv.reader(fileName)
                 for row in reader:
-                    self.INFO["taskTimes"] = row
+                    if any(":" in i for i in row):
+                        taskTimes = []
+                        for i in row:
+                            temp = i.split(":")
+                            taskTimes.append(str(float(temp[0]) * 60 + float(temp[1]) + float(temp[2]) * 0.01))
+                    else:
+                        taskTimes = row
+                    self.INFO["taskTimes"] = taskTimes
 
     def readyButtonClicked(self):
         self.layout.setCurrentIndex(1)

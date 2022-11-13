@@ -3,7 +3,7 @@ Software developed for a simulated autonomous driving experiment. Built with PyQ
 
 ## Tables of Contents
 1. [Introduction](https://github.com/sf200212345/drivingTestProgram#introduction)
-2. [TL;DR](https://github.com/sf200212345/drivingTestProgram#tl;dr)
+2. [TL;DR](https://github.com/sf200212345/drivingTestProgram#tldr)
 3. [Using Autonomous_Driving_with_Tasks_Experiment (with example workflows)](https://github.com/sf200212345/drivingTestProgram#using-autonomous_driving_with_tasks_experiment)
 3. [Notes on run_experiment (app_driver.py)](https://github.com/sf200212345/drivingTestProgram#notes-on-run_experiment)
     - [Instructions Page (/scripts/info_window.py)](https://github.com/sf200212345/drivingTestProgram#instructions-page)

@@ -3,7 +3,7 @@ Software developed for a simulated autonomous driving experiment. Built with PyQ
 
 ## Tables of Contents
 1. [Introduction](https://github.com/sf200212345/drivingTestProgram#introduction)
-2. [TLDR](https://github.com/sf200212345/drivingTestProgram#tldr)
+2. [TL;DR](https://github.com/sf200212345/drivingTestProgram#tl;dr)
 3. [Using Autonomous_Driving_with_Tasks_Experiment (with example workflows)](https://github.com/sf200212345/drivingTestProgram#using-autonomous_driving_with_tasks_experiment)
 3. [Notes on run_experiment (app_driver.py)](https://github.com/sf200212345/drivingTestProgram#notes-on-run_experiment)
     - [Instructions Page (/scripts/info_window.py)](https://github.com/sf200212345/drivingTestProgram#instructions-page)
@@ -18,7 +18,7 @@ This is a Python GUI built with the PyQt6 library containing an app GUI (app_dri
 
 There are two modes available in the app: trivial and control. Control is exactly the app flow described above. Trivial is slightly different, as it also prompts participants to press a "I am paying attention" button while the video is playing to keep the participant engaged. This experiment therefore explores whether the addition of a "trivial" task helps the participant stay more engaged while in an autonomous driving experience.
 
-## TLDR
+## TL;DR
 
 ## Using Autonomous_Driving_with_Tasks_Experiment
 Autonomous_Driving_with_Tasks_Experiment.zip will be the .zip file distributed, which contains the file structure listed:

@@ -1,0 +1,4 @@
+The pyinstaller commands to run are:
+
+pyinstaller --name "run_experiment" --noconsole --onefile app_driver.py
+pyinstaller --name "settings" --noconsole --onefile settings_driver.py

@@ -1,4 +1,4 @@
-# drivingTestProgram
+# drivingTestProgram Documentation
 Software developed for a simulated autonomous driving experiment. Built with PyQt6 and packaged with PyInstaller to be distributed to Windows computers.
 
 ## Tables of Contents

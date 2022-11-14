@@ -19,6 +19,13 @@ This is a Python GUI built with the PyQt6 library containing an app GUI (app_dri
 There are two modes available in the app: trivial and control. Control is exactly the app flow described above. Trivial is slightly different, as it also prompts participants to press a "I am paying attention" button while the video is playing to keep the participant engaged. This experiment therefore explores whether the addition of a "trivial" task helps the participant stay more engaged while in an autonomous driving experience.
 
 ## TLDR
+- Configure the settings before distributing the .zip package to all computers used for the experiment. The settings will carry over.
+- Put the video files in this folder. You can also put the output files in this folder, but the program will create an output file if it doesn't exist in the directory.
+- Make sure to configure both modes. Leave the settings app in the mode that you want to run the experiment on when you close it.
+- You must press submit for the changes to be written to the storage files. 
+- Do not run both settings and run_experiment at the same time. Configure the settings BEFORE opening run_experiment.
+- The data from run_experiment will only be written to file AFTER the participant submits a [valid participant ID](https://github.com/sf200212345/drivingTestProgram#survey-page).
+- Make sure to test for [systematic error](https://github.com/sf200212345/drivingTestProgram#systematic-error).
 
 ## Using Autonomous_Driving_with_Tasks_Experiment
 Autonomous_Driving_with_Tasks_Experiment.zip will be the .zip file distributed, which contains the file structure listed:
@@ -146,23 +153,73 @@ Opening up "trivialTasksResults.csv" shows me the following:
 The first column will always be the participant ID. The program combines the reaction times for the "I am paying attention" and "Emergency" buttons together, so you will have to sort which reaction times belong to which categories according to the order of the timestamps.
 
 ## Notes on run_experiment
-May take a little bit to start up
+May take a little bit to start up because all the programming resources it relies on is packaged within the application. Runs most optimally if no other resource-heavy software is running in the background (e.g. any video streaming/calling application, games, etc.). 
 
 ### Instructions Page
-All initialization of experiment occurs in this page, so make sure this page is up and running before the participant starts.
+This is the first page that participants see. It looks like this:
+![instructions_page.jpg](/doc_imgs/instructions_page.jpg)
+
+All initialization for the experiment occurs in this page, so make sure this page is up and running before the participant starts. This will ensure that there are no issues prior to the experiment.
 
 ### Experiment Page
-How to test for systematic error
+This is the second page that participants see. This page contains the actual video and reaction time data collection of the experiment. It looks like this:
+![experiment_page_task.jpg](/doc_imgs/experiment_page_task.jpg)
+![experiment_page_emergency.jpg](/doc_imgs/experiment_page_emergency.jpg)
+
+#### Time collection mechanism and Random Error
+The app will check every 100 ms whether a timestamp is near. Specifically, if timestamp - current time is less than 50 ms, the app will display the corresponding button. Once the button is pressed, the app will note down the current time to process later with the given timestamps. Since the time collection mechanism is set up like this, there should be a less-than 50 ms random error on the collected reaction time.
+
+#### Systematic Error
+It takes a little bit of time for all of the steps of time collection, so the results from this app won't be perfect. However, there is a observable systematic error that can be tested for. This systematic error will differ based on your computer specs, but it shouldn't differ by a huge range. You should test for systematic error on a computer that would eventually be used in the experiment, replicating the same digital environment as when you actually run the app. 
+
+To test for systematic error, set up all the settings as it would be in the actual experiment, and open "run_experiment" and go to the experiment page. DO NOT press any buttons. This will force the program to collect the latest possible reaction time for each timestamp. The recorded time will be longer than the display time you set in settings, so display time - collected time would be your systematic error. This error should be fairly consistent across all data points. As an example, I set the display time to be 2 seconds, which yielded the following data:
+![systematic_error.jpg](/doc_imgs/systematic_error.jpg)
+
+As before, the first column is the participant ID. Please remember that there should be a random error around 50 ms, or 0.05 seconds. The systematic error in this example would be around 0.3 - 0.4 seconds. From testing, it looks like longer display times and longer gaps between timestamps would stablize/lower the systematic error, so it shouldn't be an issue for the actual experiment.
 
 ### Survey Page
-Valid participant ID
+The survey page consists of the prompt that tells participants to complete the survey and the page to enter their participant ID. These pages look like this:
+![survey_prompt.jpg](/doc_imgs/survey_prompt.jpg)
+![survey_input.jpg](/doc_imgs/survey_input.jpg)
+
+The program will wait 5 seconds after the "Open Survey" button is pressed before moving onto the next page. This should prevent things like accidentally closing the browser after opening the survey.
+
+The area where the participant is asked to enter their participant ID will check if the entered ID conforms to a certain format when the participant presses the "submit" button. The participant ID must consist only of numbers and contain no whitespace or any special characters. The participant will not be able to move on if the field is left empty. The following error messages will be displayed if the participant ID isn't in the right format:
+![survey_empty.jpg](/doc_imgs/survey_empty.jpg)
+![survey_invalid.jpg](/doc_imgs/survey_invalid.jpg)
 
 ### Ending Page
-Flush all data to files
+This is the final page that participants will see. This page looks like this:
+![ending_page.jpg](/doc_imgs/ending_page.jpg)
+
+All the data collected in this experiment will be processed and written to the output file defined in settings after the participant presses the "submit" button on the previous page, which prompted participants for their participant ID. As before, after participants see this page, they can safely click "X" to exit out of the application without worrying about the data not being saved.
 
 ## Notes on settings
-please only .csv or plaintext files for output file
-.mov, .mp4 both worked for me for video files
+There are two modes available in settings: trivial and control. Trivial refers to the mode where participants have to press a button to stay engaged, while the control doesn't have that feature. Please remember to edit and submit the settings for both modes before distributing the entire folder to other lab computers so you don't need to configure each computer individually. Also make sure that you have submitted the settings you want before opening "run_experiment". 
+
+Please only specify .csv or plaintext files for the output file. Other output file formats may not be supported. Remember that this file will be created by the program if it doesn't exist in the current directory. 
+
+For the video file format, I tested with .mov and .mp4 files. Both of these played without problem. Other common video file formats will probably be okay as well, but I haven't tested them.
 
 ### Storage Files
-Which fields correspond to which storage files
+"settings.exe" and "run_experiment.exe" will read all settings from the "storage" folder. Do not change the folder or file names. If you would like to configure these files directly instead of through the settings app, I have listed which fields in the settings app corresponds to which files:
+
+The file structure of the storage folder looks like this:
+```
+storage
+├── controlFiles.csv
+├── controlTimes.csv
+├── mode.csv
+├── trivialEmergencyTimes.csv
+├── trivialFiles.csv
+└── trivialTaskTimes.csv
+```
+
+controlTimes.csv, trivialEmergencyTimes.csv and trivialTaskTimes.csv all store the timestamps entered for each scenario. These are stored on a single line as comma-separated values (there are no whitespaces between any values). If you open the .csv file with Excel, Excel will automatically put commas between separate cells, so just make sure that all the timestamps are on the same row.
+
+mode.csv stores the current mode for "run_experiment". 'T' runs the experiment in Trivial mode, 'C' runs the experiment in Control mode. 
+
+controlFiles.csv and trivialFiles.csv both store 4 values each. The values are in this order: video file, output file, display time of button, survey link. As an example:
+![trivialFiles.jpg](/doc_imgs/trivialFiles.jpg)
+
+The video name is example_trivial.mp4, the output file is trivialTasksResults.csv, the display time for buttons is 2 seconds, and the survey link is https://some_survey_link.com.

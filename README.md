@@ -1,5 +1,5 @@
 # drivingTestProgram Documentation
-Software developed for a simulated autonomous driving experiment. Built with PyQt6 and packaged with PyInstaller to be distributed to Windows computers. Download the latest app package [here](/Autonomous_Driving_with_Tasks_Experiment.zip).
+Software developed for a simulated autonomous driving experiment. Built with PyQt6 and packaged with PyInstaller to be distributed to Windows computers.
 
 For developers (really just myself):
 You need to have the PyQt6 library downloaded to run this from the command line. You can run "python3 settings_driver.py" to open settings and "python3 app_driver.py" to open the app. PyInstaller commands to package the app are in pyinstall_commands.txt. 

@@ -19,7 +19,7 @@ scripts/__pycache__/
 
 # ignore distribution package and folder
 Autonomous_Driving_with_Tasks_Experiment/
-# Autonomous_Driving_with_Tasks_Experiment.zip
+Autonomous_Driving_with_Tasks_Experiment.zip
 
 # ignore .spec files
 *.spec
